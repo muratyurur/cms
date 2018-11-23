@@ -5,7 +5,7 @@
                 <span class="fa fa-heart" style="color: #c10000">
                     <span class="u-VisuallyHidden">love</span>
                 </span>
-                <span class="footer-msg"> using &nbsp;</span>
+                <span class="footer-msg"> using&nbsp;</span>
                 <a href="https://codeigniter.com" target="_blank">
                     <span style="
                     font-family: Consolas, Monaco, Courier New, Courier, monospace;
