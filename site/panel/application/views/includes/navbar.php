@@ -18,8 +18,8 @@
         </button>
 
         <a href="../index.html" class="navbar-brand">
-            <span class="brand-icon"><i class="fa fa-gg"></i></span>
-            <span class="brand-name">Infinity</span>
+            <span class="brand-icon"><i class="zmdi zmdi-check-all"></i></span>
+            <span class="brand-name"">Y<small>önetim</small> P<small>aneli</small></span>
         </a>
     </div><!-- .navbar-header -->
 
