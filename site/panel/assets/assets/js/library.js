@@ -61,10 +61,10 @@ var LIBS = {
 		"../panel/assets/libs/bower/summernote/dist/summernote.css",
 		"../panel/assets/libs/bower/summernote/dist/summernote.min.js"
 	],
-	DataTable: [
-		"../panel/assets/libs/misc/datatables/datatables.min.css",
-		"../panel/assets/libs/misc/datatables/datatables.min.js"
-	],
+	// DataTable: [
+	// 	"../panel/assets/libs/misc/datatables/datatables.min.css",
+	// 	"../panel/assets/libs/misc/datatables/datatables.min.js"
+	// ],
 	fullCalendar: [
 		"../panel/assets/libs/bower/moment/moment.js",
 		"../panel/assets/libs/bower/fullcalendar/dist/fullcalendar.min.css",
