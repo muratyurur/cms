@@ -11,14 +11,14 @@
                 </li>
 
                 <li>
-                    <a href="javascript:void(0)">
+                    <a href="<?php base_url(); ?>">
                         <i class="menu-icon zmdi zmdi-settings zmdi-hc-lg"></i>
                         <span class="menu-text">Ayarlar</span>
                     </a>
                 </li>
 
                 <li>
-                    <a href="javascript:void(0)">
+                    <a href="<?php base_url(); ?>">
                         <i class="menu-icon zmdi zmdi-email zmdi-hc-lg"></i>
                         <span class="menu-text">ePosta Ayarları</span>
                     </a>
@@ -50,70 +50,70 @@
                 </li>
 
                 <li>
-                    <a href="javascript:void(0)" class="submenu-toggle">
+                    <a href="<?php base_url(); ?>">
                         <i class="menu-icon zmdi zmdi-code-setting zmdi-hc-lg"></i>
                         <span class="menu-text">Slider</span>
                     </a>
                 </li>
 
                 <li>
-                    <a href="javascript:void(0)" class="submenu-toggle">
+                    <a href="<?php echo base_url("product"); ?>">
                         <i class="menu-icon zmdi zmdi-shopping-basket zmdi-hc-lg"></i>
                         <span class="menu-text">Ürünler</span>
                     </a>
                 </li>
 
                 <li>
-                    <a href="javascript:void(0)" class="submenu-toggle">
+                    <a href="<?php base_url(); ?>">
                         <i class="menu-icon fa fa-newspaper-o"></i>
                         <span class="menu-text">Haberler</span>
                     </a>
                 </li>
 
                 <li>
-                    <a href="javascript:void(0)" class="submenu-toggle">
+                    <a href="<?php base_url(); ?>">
                         <i class="menu-icon zmdi zmdi-calendar-note zmdi-hc-lg"></i>
                         <span class="menu-text">Eğitimler</span>
                     </a>
                 </li>
 
                 <li>
-                    <a href="javascript:void(0)" class="submenu-toggle">
+                    <a href="<?php base_url(); ?>">
                         <i class="menu-icon zmdi zmdi-case-check zmdi-hc-lg"></i>
                         <span class="menu-text">Referanslar</span>
                     </a>
                 </li>
 
                 <li>
-                    <a href="javascript:void(0)" class="submenu-toggle">
+                    <a href="<?php base_url(); ?>">
                         <i class="menu-icon zmdi zmdi-puzzle-piece zmdi-hc-lg"></i>
                         <span class="menu-text">Markalar</span>
                     </a>
                 </li>
 
                 <li>
-                    <a href="javascript:void(0)" class="submenu-toggle">
+                    <a href="<?php base_url(); ?>">
                         <i class="menu-icon zmdi zmdi-accounts zmdi-hc-lg"></i>
                         <span class="menu-text">Kullanıcılar</span>
                     </a>
                 </li>
 
                 <li>
-                    <a href="javascript:void(0)" class="submenu-toggle">
+                    <a href="<?php base_url(); ?>">
                         <i class="menu-icon zmdi zmdi-accounts-add zmdi-hc-lg"></i>
                         <span class="menu-text">Kullanıcı Rolleri</span>
                     </a>
                 </li>
 
                 <li>
-                    <a href="javascript:void(0)" class="submenu-toggle">
+                    <a href="<?php base_url(); ?>">
                         <i class="menu-icon zmdi zmdi-accounts-list-alt zmdi-hc-lg"></i>
                         <span class="menu-text">Aboneler</span>
                     </a>
                 </li>
 
                 <li>
-                    <a href="javascript:void(0)" class="submenu-toggle">
+                    <a href="<?php base_url(); ?>">
                         <i class="menu-icon zmdi zmdi-lamp zmdi-hc-lg"></i>
                         <span class="menu-text">Popup Hizmeti</span>
                     </a>
