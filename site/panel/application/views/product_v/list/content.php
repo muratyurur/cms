@@ -18,6 +18,7 @@
             <?php } else { ?>
                 <table id="datatable-responsive" class="table table-striped table-hover table-bordered">
                     <thead>
+                        <th class="w20"><i class="fa fa-reorder"></i></th>
                         <th class="w50">#id</th>
                         <th>url</th>
                         <th>Başlık</th>
@@ -25,15 +26,18 @@
                         <th class="w75">Durumu</th>
                         <th class="w200">İşlem</th>
                     </thead>
-                    <tbody>
+                    <tbody class="sortable" data-url="<?php echo base_url("product/rankSetter"); ?>">
                     <?php foreach ($items as $item) { ?>
-                        <tr>
+                        <tr id="ord-<?php echo $item->id; ?>">
+                            <td class="text-center"><i class="fa fa-reorder"></i></td>
                             <td class="text-center"><?php echo $item->id; ?></td>
                             <td class="text-center"><?php echo $item->url ?></td>
                             <td class="text-center"><?php echo $item->title; ?></td>
                             <td><?php echo $item->description; ?></td>
                             <td class="text-center">
                                 <input
+                                        data-url="<?php echo base_url("product/isActiveSetter/$item->id"); ?>"
+                                        class="isActive"
                                         type="checkbox"
                                         data-switchery
                                         data-color="#188ae2"
@@ -41,13 +45,15 @@
                                 />
                             </td>
                             <td class="text-center">
-                                <a href="#">
-                                    <button type="button" class="btn btn-danger btn-sm btn-outline">
+                                    <button
+                                        data-url="<?php echo base_url("product/delete/$item->id"); ?>"
+                                        type="button"
+                                        class="btn btn-danger btn-sm btn-outline remove-btn"
+                                    >
                                         <i class="fa fa-trash-o"></i>
                                         Sil
                                     </button>
-                                </a>
-                                <a href="#">
+                                <a href="<?php echo base_url("product/update_form/$item->id"); ?>">
                                     <button type="button" class="btn btn-primary btn-sm btn-outline">
                                         <i class="fa fa-pencil-square-o"></i>
                                         Düzenle
