@@ -24,7 +24,7 @@
                         <th>Başlık</th>
                         <th>Açıklama</th>
                         <th class="w75">Durumu</th>
-                        <th class="w200">İşlem</th>
+                        <th class="w300">İşlem</th>
                     </thead>
                     <tbody class="sortable" data-url="<?php echo base_url("product/rankSetter"); ?>">
                     <?php foreach ($items as $item) { ?>
@@ -57,6 +57,12 @@
                                     <button type="button" class="btn btn-primary btn-sm btn-outline">
                                         <i class="fa fa-pencil-square-o"></i>
                                         Düzenle
+                                    </button>
+                                </a>
+                                <a href="<?php echo base_url("product/image_form/$item->id"); ?>">
+                                    <button type="button" class="btn btn-inverse btn-sm btn-outline">
+                                        <i class="fa fa-image"></i>
+                                        Ürün Görselleri
                                     </button>
                                 </a>
                             </td>

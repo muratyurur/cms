@@ -255,4 +255,24 @@ class Product extends CI_Controller
             );
         }
     }
+
+    public function image_form($id)
+    {
+        $viewData = new stdClass();
+
+        /** Taking the specific row's data from the table */
+        $item = $this->product_model->get(
+            array(
+                "id"        => $id
+            )
+        );
+
+        /** Defining data to be sent to view */
+        $viewData->viewFolder = $this->viewFolder;
+        $viewData->subViewFolder = "image";
+        $viewData->item = $item;
+
+        /** Load View */
+        $this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/index", $viewData);
+    }
 }
