@@ -199,7 +199,6 @@ class Product extends CI_Controller
     public function delete($id)
     {
         /** Starting Delete Statement */
-
         $delete = $this->product_model->delete(
             array(
                 "id"    => $id
@@ -272,7 +271,7 @@ class Product extends CI_Controller
         $item_images = $this->product_image_model->get_all(
             array(
                 "product_id"        => $id
-            )
+            ), "rank ASC"
         );
 
         /** Defining data to be sent to view */
@@ -348,12 +347,47 @@ class Product extends CI_Controller
         echo $render_html;
     }
 
+    public function imageDelete($id, $parent_id)
+    {
+        /** Taking the specific row's data from products table */
+        $image = $this->product_image_model->get(
+            array(
+                "id"        => $id
+            )
+        );
+
+        /** Starting Delete Statement */
+        $delete = $this->product_image_model->delete(
+            array(
+                "id"    => $id
+            )
+        );
+
+        /** If Delete Statement Succesful */
+        if ($delete){
+
+            /** Deleting the file physically from disk */
+            unlink("uploads/{$this->viewFolder}/$image->img_url");
+
+            /** Redirect to Module's List Page */
+            redirect(base_url("product/image_form/$parent_id"));
+
+            /** If Delete Statement Unsuccessful */
+        } else {
+
+            /** Redirect to Module's List Page */
+            redirect(base_url("product/image_form/$parent_id"));
+
+        }
+    }
+
     public function isCoverSetter($id, $parent_id)
     {
         if ($id && $parent_id) {
 
             $isCover = ($this->input->post("data") === "true") ? 1 : 0;
 
+            /** Setting a record to Cover Image */
             $this->product_image_model->update(
                 array(
                     "id"            => $id,
@@ -363,6 +397,36 @@ class Product extends CI_Controller
                     "isCover" => $isCover
                 )
             );
+
+            /** Setting the other photos are not cover image */
+            $this->product_image_model->update(
+                array(
+                    "id !="          => $id,
+                    "product_id"     => $parent_id
+                ),
+                array(
+                    "isCover" => 0
+                )
+            );
+
+            $viewData = new stdClass();
+
+            /** Taking all images of a specific product from the product_images table */
+            $item_images = $this->product_image_model->get_all(
+                array(
+                    "product_id"        => $parent_id
+                ), "rank ASC"
+            );
+
+            /** Defining data to be sent to view */
+            $viewData->viewFolder = $this->viewFolder;
+            $viewData->subViewFolder = "image";
+            $viewData->item_images = $item_images;
+
+            /** Reload Render Element View */
+            $render_html = $this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/render_elements/image_list_v", $viewData, true);
+
+            echo $render_html;
         }
     }
 
@@ -378,6 +442,28 @@ class Product extends CI_Controller
                 "isActive"  => $isActive
             )
         );
+    }
+
+    public function imageRankSetter()
+    {
+        $data = $this->input->post("data");
+
+        parse_str($data, $order);
+
+        $images = $order["ord"];
+
+        foreach ($images as $rank => $id)
+        {
+            $this->product_image_model->update(
+                array(
+                    "id"    => $id,
+                    "rank!="  => $rank
+                ),
+                array(
+                    "rank"  => $rank
+                )
+            );
+        }
     }
 
 }

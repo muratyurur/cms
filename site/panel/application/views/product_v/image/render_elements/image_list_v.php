@@ -3,7 +3,7 @@
         <p style="font-size: larger">Henüz bu ürün için bir görsel yüklenmemiş...</p>
     </div>
 <?php } else { ?>
-    <table id="datatable-responsive" class="table table-bordered table-hover table-striped">
+    <table id="datatable-responsive" class="table table-bordered table-hover table-striped content-container">
         <thead>
         <th class="w20"><i class="fa fa-reorder"></i></th>
         <th class="w100">Görsel</th>
@@ -13,15 +13,15 @@
         <th class="w50">Kapak Resmi</th>
         <th class="w100">İşlem</th>
         </thead>
-        <tbody>
+        <tbody class="sortable" data-url="<?php echo base_url("product/imageRankSetter"); ?>">
         <?php foreach ($item_images as $image) { ?>
-            <tr>
+            <tr id="ord-<?php echo $image->id; ?>">
                 <td class="text-center"><i class="fa fa-reorder"></i></td>
                 <td>
                     <img
                         class="img-responsive img-rounded"
                         src="<?php echo base_url("uploads/{$viewFolder}/$image->img_url"); ?>"
-                        alt="">
+                        alt="<?php echo $image->img_url; ?>">
                 </td>
                 <td class="text-center"><?php echo $image->id; ?></td>
                 <td><?php echo $image->img_url; ?></td>
@@ -38,7 +38,7 @@
                 <td class="text-center">
                     <input
                             data-url="<?php echo base_url("product/isCoverSetter/$image->id/$image->product_id"); ?>"
-                            class="isActive"
+                            class="isCover"
                             type="checkbox"
                             data-switchery
                             data-color="#f9c851"
@@ -47,7 +47,7 @@
                 </td>
                 <td class="text-center">
                     <button
-                        data-url="<?php echo base_url("product/delete/$image->id"); ?>"
+                        data-url="<?php echo base_url("product/imageDelete/$image->id/$image->product_id"); ?>"
                         type="button"
                         class="btn btn-danger btn-sm btn-outline remove-btn"
                     >

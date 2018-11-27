@@ -21,12 +21,12 @@
 
 <div class="row">
     <div class="col-md-12">
-        <div class="col-md-10">
+        <div class="col-md-9">
             <h4 class="m-b-lg">
                 <b><?php echo $item->title; ?></b> kaydına ait görseller
             </h4>
         </div>
-        <div class="col-md-2" style="text-align: right">
+        <div class="col-md-3" style="text-align: right">
             <a href="<?php echo base_url("product") ?>">
                 <button class="btn btn-sm btn-outline btn-inverse ml-3">
                     <i class="fa fa-chevron-left"></i> Geri Dön

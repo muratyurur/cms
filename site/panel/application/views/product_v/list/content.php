@@ -2,7 +2,10 @@
     <div class="col-md-12">
         <h4 class="m-b-lg">
             Ürünler Listesi
-            <a class="btn btn-outline btn-info btn-sm pull-right" href="<?php echo base_url("product/new_form"); ?>"><i class="fa fa-plus"></i> Yeni Ekle</a>
+            <a class="btn btn-outline btn-info btn-sm pull-right"
+               href="<?php echo base_url("product/new_form"); ?>">
+                <i class="fa fa-plus"></i> Yeni Ekle
+            </a>
         </h4>
     </div>
     <div class="col-md-12">
@@ -16,7 +19,8 @@
                     </p>
                 </div>
             <?php } else { ?>
-                <table id="datatable-responsive" class="table table-striped table-hover table-bordered">
+                <table id="datatable-responsive"
+                       class="table table-striped table-hover table-bordered content-container">
                     <thead>
                         <th class="w20"><i class="fa fa-reorder"></i></th>
                         <th class="w50">#id</th>
