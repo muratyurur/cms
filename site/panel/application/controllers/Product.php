@@ -7,8 +7,9 @@ class Product extends CI_Controller
         parent::__construct();
         $this->viewFolder = "product_v";
 
-        /** Load Model */
+        /** Load Models */
         $this->load->model("product_model");
+        $this->load->model("product_image_model");
     }
 
     public function index()
@@ -157,7 +158,7 @@ class Product extends CI_Controller
                 )
             );
 
-            /** If Update Statement Succesful */
+            /** If Update Statement is Succesful */
             if ($update){
 
                 /** Redirect to Module's List Page */
@@ -171,7 +172,7 @@ class Product extends CI_Controller
 
             }
 
-            /** If Validation Unsuccessful */
+            /** If Validation is Unsuccessful */
         } else {
             /** Reload View and Show Error Messages Below the Inputs */
             $viewData = new stdClass();
@@ -222,7 +223,7 @@ class Product extends CI_Controller
 
     public function isActiveSetter($id)
     {
-        $isActive = ($this->input->post("data") === "true" ? 1 : 0);
+        $isActive = ($this->input->post("data") === "true") ? 1 : 0;
 
         $this->product_model->update(
             array(
@@ -260,10 +261,17 @@ class Product extends CI_Controller
     {
         $viewData = new stdClass();
 
-        /** Taking the specific row's data from the table */
+        /** Taking the specific row's data from products table */
         $item = $this->product_model->get(
             array(
                 "id"        => $id
+            )
+        );
+
+        /** Taking all images of a specific product from the product_images table */
+        $item_images = $this->product_image_model->get_all(
+            array(
+                "product_id"        => $id
             )
         );
 
@@ -271,8 +279,105 @@ class Product extends CI_Controller
         $viewData->viewFolder = $this->viewFolder;
         $viewData->subViewFolder = "image";
         $viewData->item = $item;
+        $viewData->item_images = $item_images;
 
         /** Load View */
         $this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/index", $viewData);
     }
+
+    public function image_upload($id)
+    {
+        /** Taking the name of uploaded file */
+        $file_name = convertToSEO(pathinfo($_FILES["file"]["name"], PATHINFO_FILENAME)) . "." . pathinfo($_FILES["file"]["name"], PATHINFO_EXTENSION);
+
+        /** CodeIgniter 'Upload Library's configuration set */
+        $config["allowed_types"]    = "jpg|jpeg|png";
+        $config["upload_path"]      = "uploads/{$this->viewFolder}/";
+        $config["file_name"]        = $file_name;
+
+        /** Load CodeIgniter 'Upload Library' */
+        $this->load->library("upload", $config);
+
+        /** Doing upload by 'do_upload' method */
+        $upload = $this->upload->do_upload("file");
+
+        /** If Upload Process is Succesful */
+        if ($upload)
+        {
+            /** Create a Variable and set with Uploaded File's name */
+            $uploaded_file = $this->upload->data("file_name");
+
+            /** Insert Reference Records to product_images Table for uploaded photos */
+            $this->product_image_model->add(
+                array(
+                    "img_url"       => $uploaded_file,
+                    "rank"          => 0,
+                    "isActive"      => 1,
+                    "isCover"       => 0,
+                    "createdAt"     => date("Y-m-d H:i:s"),
+                    "product_id"    => $id
+                )
+            );
+
+        /** If Upload Process is Unsuccesful */
+        } else {
+            /** Set Alert with Error Message */
+            echo "aktarım başarısız";
+        }
+    }
+
+    public function refresh_image_list($id)
+    {
+        $viewData = new stdClass();
+
+        /** Taking all images of a specific product from the product_images table */
+        $item_images = $this->product_image_model->get_all(
+            array(
+                "product_id"        => $id
+            )
+        );
+
+        /** Defining data to be sent to view */
+        $viewData->viewFolder = $this->viewFolder;
+        $viewData->subViewFolder = "image";
+        $viewData->item_images = $item_images;
+
+        /** Reload Render Element View */
+        $render_html = $this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/render_elements/image_list_v", $viewData, true);
+
+        echo $render_html;
+    }
+
+    public function isCoverSetter($id, $parent_id)
+    {
+        if ($id && $parent_id) {
+
+            $isCover = ($this->input->post("data") === "true") ? 1 : 0;
+
+            $this->product_image_model->update(
+                array(
+                    "id"            => $id,
+                    "product_id"    => $parent_id
+                ),
+                array(
+                    "isCover" => $isCover
+                )
+            );
+        }
+    }
+
+    public function imageIsActiveSetter($id)
+    {
+        $isActive = ($this->input->post("data") === "true") ? 1 : 0;
+
+        $this->product_image_model->update(
+            array(
+                "id"        => $id,
+            ),
+            array(
+                "isActive"  => $isActive
+            )
+        );
+    }
+
 }
