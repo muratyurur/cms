@@ -82,6 +82,7 @@ var LIBS = {
 		"../panel/assets/libs/bower/switchery/dist/switchery.min.css",
 		"../panel/assets/libs/bower/switchery/dist/switchery.min.js",
 		"../panel/assets/libs/bower/lightbox2/dist/css/lightbox.min.css",
-		"../panel/assets/libs/bower/lightbox2/dist/js/lightbox.min.js"
+		"../panel/assets/libs/bower/lightbox2/dist/js/lightbox.min.js",
+		"../panel/assets/libs/bower/lightbox2/dist/js/iziToast.min.js"
 	]
 };

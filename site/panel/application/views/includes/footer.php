@@ -8,16 +8,17 @@
                 <span class="footer-msg"> using&nbsp;</span>
                 <a href="https://codeigniter.com" target="_blank">
                     <span style="
-                    font-family: Consolas, Monaco, Courier New, Courier, monospace;
+                    font-family: amblebold_italic;
                     font-weight: bold;
                     color: #EE4323;
                     vertical-align: central;
                     font-size: 13px">
-                    <i class="fa fa-free-code-camp" aria-hidden="true"></i> CodeIgniter
+                        <img src="<?php echo base_url("assets/assets/images/codeIgniter.png"); ?>" width="16px" style="vertical-align: baseline!important;">
+                        CodeIgniter
                     </span>
                 </a>
                 <span class="footer-msg">
-                    by&nbsp;
+                    &nbsp;by&nbsp;
                 </span>
                     <a href="https://muratyurur.com" target="_blank">
                         <span class="signature">

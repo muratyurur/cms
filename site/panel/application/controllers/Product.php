@@ -53,7 +53,7 @@ class Product extends CI_Controller
         /** Translate Validation Messages */
         $this->form_validation->set_message(
             array(
-                "required"  => "<b>{field}</b> alanı boş bırakılamaz..."
+                "required" => "<b>{field}</b> alanı boş bırakılamaz..."
             )
         );
 
@@ -66,28 +66,41 @@ class Product extends CI_Controller
 
             $insert = $this->product_model->add(
                 array(
-                    "title"         => $this->input->post("title"),
-                    "description"   => $this->input->post("description"),
-                    "url"           => convertToSEO($this->input->post("title")),
-                    "rank"          => 0,
-                    "isActive"      => 1,
-                    "createdAt"     => date("Y-m-d H:i:s")
+                    "title" => $this->input->post("title"),
+                    "description" => $this->input->post("description"),
+                    "url" => convertToSEO($this->input->post("title")),
+                    "rank" => 0,
+                    "isActive" => 1,
+                    "createdAt" => date("Y-m-d H:i:s")
                 )
             );
 
             /** If Insert Statement Succesful */
-            if ($insert){
+            if ($insert) {
 
-                /** Redirect to Module's List Page */
-                redirect(base_url("product"));
+                /** Set the notification is Success */
+                $alert = array(
+                    "type" => "success",
+                    "title" => "İşlem Başarılı",
+                    "text" => "Kayıt başarılı bir şekilde eklendi.."
+                );
 
-            /** If Insert Statement Unsuccessful */
+                /** If Insert Statement Unsuccessful */
             } else {
 
-                /** Redirect to Module's List Page */
-                redirect(base_url("product"));
+                /** Set the notification is Error */
+                $alert = array(
+                    "type" => "error",
+                    "title" => "İşlem Başarısız",
+                    "text" => "Kayıt işlemi esnasında bir sorun oluştu.."
+                );
 
             }
+
+            $this->session->set_flashdata("alert", $alert);
+
+            /** Redirect to Module's List Page */
+            redirect(base_url("product"));
 
             /** If Validation Unsuccessful */
         } else {
@@ -112,7 +125,7 @@ class Product extends CI_Controller
         /** Taking the specific row's data from the table */
         $item = $this->product_model->get(
             array(
-                "id"        => $id
+                "id" => $id
             )
         );
 
@@ -136,7 +149,7 @@ class Product extends CI_Controller
         /** Translate Validation Messages */
         $this->form_validation->set_message(
             array(
-                "required"  => "<b>{field}</b> alanı boş bırakılamaz..."
+                "required" => "<b>{field}</b> alanı boş bırakılamaz..."
             )
         );
 
@@ -149,28 +162,41 @@ class Product extends CI_Controller
 
             $update = $this->product_model->update(
                 array(
-                    "id"    => $id
+                    "id" => $id
                 ),
                 array(
-                    "title"         => $this->input->post("title"),
-                    "description"   => $this->input->post("description"),
-                    "url"           => convertToSEO($this->input->post("title")),
+                    "title" => $this->input->post("title"),
+                    "description" => $this->input->post("description"),
+                    "url" => convertToSEO($this->input->post("title")),
                 )
             );
 
             /** If Update Statement is Succesful */
-            if ($update){
+            if ($update) {
 
-                /** Redirect to Module's List Page */
-                redirect(base_url("product"));
+                /** Set the notification is Success */
+                $alert = array(
+                    "type" => "success",
+                    "title" => "İşlem Başarılı",
+                    "text" => "Kayıt başarılı bir şekilde güncellendi.."
+                );
 
-                /** If Update Statement Unsuccessful */
+                /** If Update Statement is Unsuccessful */
             } else {
 
-                /** Redirect to Module's List Page */
-                redirect(base_url("product"));
+                /** Set the notification is Error */
+                $alert = array(
+                    "type" => "error",
+                    "title" => "İşlem Başarısız",
+                    "text" => "Kayıt güncelleme işlemi esnasında bir sorun oluştu.."
+                );
 
             }
+
+            $this->session->set_flashdata("alert", $alert);
+
+            /** Redirect to Module's List Page */
+            redirect(base_url("product"));
 
             /** If Validation is Unsuccessful */
         } else {
@@ -180,7 +206,7 @@ class Product extends CI_Controller
             /** Taking the specific row's data from the table */
             $item = $this->product_model->get(
                 array(
-                    "id"        => $id
+                    "id" => $id
                 )
             );
 
@@ -201,23 +227,37 @@ class Product extends CI_Controller
         /** Starting Delete Statement */
         $delete = $this->product_model->delete(
             array(
-                "id"    => $id
+                "id" => $id
             )
         );
 
-        /** If Delete Statement Succesful */
-        if ($delete){
+        /** If Delete Statement is Succesful */
+        if ($delete) {
 
-            /** Redirect to Module's List Page */
-            redirect(base_url("product"));
+            /** Set the notification is Success */
+            $alert = array(
+                "type" => "success",
+                "title" => "İşlem Başarılı",
+                "text" => "Kayıt başarılı bir şekilde silindi.."
+            );
 
-            /** If Delete Statement Unsuccessful */
+            /** If Delete Statement is Unsuccessful */
         } else {
 
-            /** Redirect to Module's List Page */
-            redirect(base_url("product"));
+            /** Set the notification is Error */
+            $alert = array(
+                "type" => "error",
+                "title" => "İşlem Başarısız",
+                "text" => "Kayıt silme işlemi esnasında bir sorun oluştu.."
+            );
 
         }
+
+        $this->session->set_flashdata("alert", $alert);
+
+        /** Redirect to Module's List Page */
+        redirect(base_url("product"));
+
     }
 
     public function isActiveSetter($id)
@@ -226,10 +266,10 @@ class Product extends CI_Controller
 
         $this->product_model->update(
             array(
-                "id"        => $id
+                "id" => $id
             ),
             array(
-                "isActive"  => $isActive
+                "isActive" => $isActive
             )
         );
     }
@@ -242,15 +282,14 @@ class Product extends CI_Controller
 
         $items = $order["ord"];
 
-        foreach ($items as $rank => $id)
-        {
+        foreach ($items as $rank => $id) {
             $this->product_model->update(
                 array(
-                    "id"    => $id,
-                    "rank!="  => $rank
+                    "id" => $id,
+                    "rank!=" => $rank
                 ),
                 array(
-                    "rank"  => $rank
+                    "rank" => $rank
                 )
             );
         }
@@ -263,14 +302,14 @@ class Product extends CI_Controller
         /** Taking the specific row's data from products table */
         $item = $this->product_model->get(
             array(
-                "id"        => $id
+                "id" => $id
             )
         );
 
         /** Taking all images of a specific product from the product_images table */
         $item_images = $this->product_image_model->get_all(
             array(
-                "product_id"        => $id
+                "product_id" => $id
             ), "rank ASC"
         );
 
@@ -290,9 +329,9 @@ class Product extends CI_Controller
         $file_name = convertToSEO(pathinfo($_FILES["file"]["name"], PATHINFO_FILENAME)) . "." . pathinfo($_FILES["file"]["name"], PATHINFO_EXTENSION);
 
         /** CodeIgniter 'Upload Library's configuration set */
-        $config["allowed_types"]    = "jpg|jpeg|png";
-        $config["upload_path"]      = "uploads/{$this->viewFolder}/";
-        $config["file_name"]        = $file_name;
+        $config["allowed_types"] = "jpg|jpeg|png";
+        $config["upload_path"] = "uploads/{$this->viewFolder}/";
+        $config["file_name"] = $file_name;
 
         /** Load CodeIgniter 'Upload Library' */
         $this->load->library("upload", $config);
@@ -301,24 +340,23 @@ class Product extends CI_Controller
         $upload = $this->upload->do_upload("file");
 
         /** If Upload Process is Succesful */
-        if ($upload)
-        {
+        if ($upload) {
             /** Create a Variable and set with Uploaded File's name */
             $uploaded_file = $this->upload->data("file_name");
 
             /** Insert Reference Records to product_images Table for uploaded photos */
             $this->product_image_model->add(
                 array(
-                    "img_url"       => $uploaded_file,
-                    "rank"          => 0,
-                    "isActive"      => 1,
-                    "isCover"       => 0,
-                    "createdAt"     => date("Y-m-d H:i:s"),
-                    "product_id"    => $id
+                    "img_url" => $uploaded_file,
+                    "rank" => 0,
+                    "isActive" => 1,
+                    "isCover" => 0,
+                    "createdAt" => date("Y-m-d H:i:s"),
+                    "product_id" => $id
                 )
             );
 
-        /** If Upload Process is Unsuccesful */
+            /** If Upload Process is Unsuccesful */
         } else {
             /** Set Alert with Error Message */
             echo "aktarım başarısız";
@@ -332,7 +370,7 @@ class Product extends CI_Controller
         /** Taking all images of a specific product from the product_images table */
         $item_images = $this->product_image_model->get_all(
             array(
-                "product_id"        => $id
+                "product_id" => $id
             )
         );
 
@@ -352,33 +390,95 @@ class Product extends CI_Controller
         /** Taking the specific row's data from products table */
         $image = $this->product_image_model->get(
             array(
-                "id"        => $id
+                "id" => $id
             )
         );
 
         /** Starting Delete Statement */
         $delete = $this->product_image_model->delete(
             array(
-                "id"    => $id
+                "id" => $id
             )
         );
 
-        /** If Delete Statement Succesful */
-        if ($delete){
+        /** If Image Delete Statement is Succesful */
+        if ($delete) {
 
             /** Deleting the file physically from disk */
             unlink("uploads/{$this->viewFolder}/$image->img_url");
 
-            /** Redirect to Module's List Page */
-            redirect(base_url("product/image_form/$parent_id"));
+            /** Set the notification is Success */
+            $alert = array(
+                "type" => "success",
+                "title" => "İşlem Başarılı",
+                "text" => "Görsel başarılı bir şekilde silindi.."
+            );
 
-            /** If Delete Statement Unsuccessful */
+            /** If Image Delete Statement is Unsuccessful */
         } else {
 
-            /** Redirect to Module's List Page */
-            redirect(base_url("product/image_form/$parent_id"));
+            /** Set the notification is Error */
+            $alert = array(
+                "type" => "error",
+                "title" => "İşlem Başarısız",
+                "text" => "Görsel silme işlemi esnasında bir sorun oluştu.."
+            );
 
         }
+
+        $this->session->set_flashdata("alert", $alert);
+
+        /** Redirect to Module's List Page */
+        redirect(base_url("product/image_form/$parent_id"));
+    }
+
+    public function imageDeleteAll($parent_id)
+    {
+        /** Taking the specific row's data from products table */
+        $images = $this->product_image_model->get_all(
+            array(
+                "product_id" => $parent_id
+            )
+        );
+
+        /** Starting Delete Statement */
+        $deleteAll = $this->product_image_model->delete(
+            array(
+                "product_id" => $parent_id
+            )
+        );
+
+        /** If Image Delete Statement is Succesful */
+        if ($deleteAll) {
+
+            /** Deleting files physically from disk */
+            foreach ($images as $image) {
+                unlink("uploads/{$this->viewFolder}/$image->img_url");
+            }
+
+            /** Set the notification is Success */
+            $alert = array(
+                "type" => "success",
+                "title" => "İşlem Başarılı",
+                "text" => "Tüm görseller başarılı bir şekilde silindi.."
+            );
+
+            /** If Image Delete Statement is Unsuccessful */
+        } else {
+
+            /** Set the notification is Error */
+            $alert = array(
+                "type" => "error",
+                "title" => "İşlem Başarısız",
+                "text" => "Görsel silme işlemi esnasında bir sorun oluştu.."
+            );
+
+        }
+
+        $this->session->set_flashdata("alert", $alert);
+
+        /** Redirect to Module's List Page */
+        redirect(base_url("product/image_form/$parent_id"));
     }
 
     public function isCoverSetter($id, $parent_id)
@@ -390,8 +490,8 @@ class Product extends CI_Controller
             /** Setting a record to Cover Image */
             $this->product_image_model->update(
                 array(
-                    "id"            => $id,
-                    "product_id"    => $parent_id
+                    "id" => $id,
+                    "product_id" => $parent_id
                 ),
                 array(
                     "isCover" => $isCover
@@ -401,8 +501,8 @@ class Product extends CI_Controller
             /** Setting the other photos are not cover image */
             $this->product_image_model->update(
                 array(
-                    "id !="          => $id,
-                    "product_id"     => $parent_id
+                    "id !=" => $id,
+                    "product_id" => $parent_id
                 ),
                 array(
                     "isCover" => 0
@@ -414,7 +514,7 @@ class Product extends CI_Controller
             /** Taking all images of a specific product from the product_images table */
             $item_images = $this->product_image_model->get_all(
                 array(
-                    "product_id"        => $parent_id
+                    "product_id" => $parent_id
                 ), "rank ASC"
             );
 
@@ -436,10 +536,10 @@ class Product extends CI_Controller
 
         $this->product_image_model->update(
             array(
-                "id"        => $id,
+                "id" => $id,
             ),
             array(
-                "isActive"  => $isActive
+                "isActive" => $isActive
             )
         );
     }
@@ -452,15 +552,14 @@ class Product extends CI_Controller
 
         $images = $order["ord"];
 
-        foreach ($images as $rank => $id)
-        {
+        foreach ($images as $rank => $id) {
             $this->product_image_model->update(
                 array(
-                    "id"    => $id,
-                    "rank!="  => $rank
+                    "id" => $id,
+                    "rank!=" => $rank
                 ),
                 array(
-                    "rank"  => $rank
+                    "rank" => $rank
                 )
             );
         }
