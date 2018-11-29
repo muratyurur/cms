@@ -10,31 +10,37 @@ class Product_model extends CI_Model
     	parent::__construct();
     }
 
-    /**  The method of returning all row's data that meets the requirements in the table */
+    /**  The method of returning all rows' data that meets the requirements in the table */
     public function get_all($where = array(), $order = "id ASC")
     {
         return $this->db->where($where)->order_by($order)->get($this->tableName)->result();
     }
 
-    /**  The Method to Returning the Specific Row's Data that Meets the Requirements from the Table */
+    /** The method of fetching row(s) from the specified limit in all rows that meet the requirements in the table */
+    public function get_limited($where = array(), $limit = "",  $order = "id ASC")
+    {
+        return $this->db->where($where)->limit($limit)->order_by($order)->get($this->tableName)->result();
+    }
+
+    /**  The method to return the specific row's data that meets the requirements from the table */
     public function get($where = array())
     {
         return $this->db->where($where)->get($this->tableName)->row();
     }
 
-    /**  The Method for Inserting Data Sent from Form to the Table */
+    /**  The method for inserting data sent from form to the table */
     public function add($data = array())
     {
         return $this->db->insert($this->tableName, $data);
     }
 
-    /**  The Method to Updating the Specific Row's Data that Meets the Requirements in the Table */
+    /**  The method to update the specific row's data that meets the requirements in the table */
     public function update($where=array(), $data = array())
     {
         return $this->db->where($where)->update($this->tableName, $data);
     }
 
-    /**  The Method to Deleting the Specific Row that Meets the Requirements in the Table */
+    /**  The method to delete the specific row that meets the requirements in the table */
     public function delete($where=array())
     {
         return $this->db->where($where)->delete($this->tableName);

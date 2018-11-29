@@ -5,9 +5,10 @@ class Product extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+        /** Setting viewFolder */
         $this->viewFolder = "product_v";
 
-        /** Load Models */
+        /** Loading Models */
         $this->load->model("product_model");
         $this->load->model("product_image_model");
     }
@@ -26,7 +27,7 @@ class Product extends CI_Controller
         $viewData->subViewFolder = "list";
         $viewData->items = $items;
 
-        /** Load View */
+        /** Loading View */
         $this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/index", $viewData);
     }
 
@@ -38,31 +39,31 @@ class Product extends CI_Controller
         $viewData->viewFolder = $this->viewFolder;
         $viewData->subViewFolder = "add";
 
-        /** Load View */
+        /** Loading View */
         $this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/index", $viewData);
     }
 
     public function save()
     {
-        /** Load Form Validation Library */
+        /** Loading Form Validation Library */
         $this->load->library("form_validation");
 
-        /** Validation Rules */
+        /** Setting validation rules */
         $this->form_validation->set_rules("title", "Başlık", "trim|required");
 
-        /** Translate Validation Messages */
+        /** Translating validation error messages */
         $this->form_validation->set_message(
             array(
                 "required" => "<b>{field}</b> alanı boş bırakılamaz..."
             )
         );
 
-        /** Run Form Validation */
+        /** Running Form Validation */
         $validate = $this->form_validation->run();
 
-        /** If Validation Successful */
+        /** If validation is successful */
         if ($validate) {
-            /** Start Insert Statement */
+            /** Then start insert statement */
 
             $insert = $this->product_model->add(
                 array(
@@ -75,20 +76,20 @@ class Product extends CI_Controller
                 )
             );
 
-            /** If Insert Statement Succesful */
+            /** If insert statement is successful */
             if ($insert) {
 
-                /** Set the notification is Success */
+                /** Set the notification as Success */
                 $alert = array(
                     "type" => "success",
                     "title" => "İşlem Başarılı",
                     "text" => "Kayıt başarılı bir şekilde eklendi.."
                 );
 
-                /** If Insert Statement Unsuccessful */
+                /** If insert statement is unsuccessful */
             } else {
 
-                /** Set the notification is Error */
+                /** Set the notification as Error */
                 $alert = array(
                     "type" => "error",
                     "title" => "İşlem Başarısız",
@@ -97,14 +98,15 @@ class Product extends CI_Controller
 
             }
 
+            /** Set the session data with result */
             $this->session->set_flashdata("alert", $alert);
 
             /** Redirect to Module's List Page */
             redirect(base_url("product"));
 
-            /** If Validation Unsuccessful */
+            /** If validation is unsuccessful */
         } else {
-            /** Reload View and Show Error Messages Below the Inputs */
+            /** Then reloading view and show error messages below the inputs */
             $viewData = new stdClass();
 
             /** Defining data to be sent to view */
@@ -112,7 +114,7 @@ class Product extends CI_Controller
             $viewData->subViewFolder = "add";
             $viewData->form_error = true;
 
-            /** Reload View */
+            /** Reloading view */
             $this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/index", $viewData);
         }
 
@@ -134,32 +136,32 @@ class Product extends CI_Controller
         $viewData->subViewFolder = "update";
         $viewData->item = $item;
 
-        /** Load View */
+        /** Loading View */
         $this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/index", $viewData);
     }
 
     public function update($id)
     {
-        /** Load Form Validation Library */
+        /** Loading Form Validation Library */
         $this->load->library("form_validation");
 
-        /** Validation Rules */
+        /** Setting validation rules */
         $this->form_validation->set_rules("title", "Başlık", "trim|required");
 
-        /** Translate Validation Messages */
+        /** Translating validation error messages */
         $this->form_validation->set_message(
             array(
                 "required" => "<b>{field}</b> alanı boş bırakılamaz..."
             )
         );
 
-        /** Run Form Validation */
+        /** Running Form Validation */
         $validate = $this->form_validation->run();
 
-        /** If Validation Successful */
+        /** If validation is successful */
         if ($validate) {
-            /** Start Update Statement */
 
+            /** Then start update statement */
             $update = $this->product_model->update(
                 array(
                     "id" => $id
@@ -171,20 +173,20 @@ class Product extends CI_Controller
                 )
             );
 
-            /** If Update Statement is Succesful */
+            /** If update statement is successful */
             if ($update) {
 
-                /** Set the notification is Success */
+                /** Set the notification as Success */
                 $alert = array(
                     "type" => "success",
                     "title" => "İşlem Başarılı",
                     "text" => "Kayıt başarılı bir şekilde güncellendi.."
                 );
 
-                /** If Update Statement is Unsuccessful */
+                /** If update statement is Unsuccessful */
             } else {
 
-                /** Set the notification is Error */
+                /** Set the notification as Error */
                 $alert = array(
                     "type" => "error",
                     "title" => "İşlem Başarısız",
@@ -198,9 +200,10 @@ class Product extends CI_Controller
             /** Redirect to Module's List Page */
             redirect(base_url("product"));
 
-            /** If Validation is Unsuccessful */
+            /** If validation is unsuccessful */
         } else {
-            /** Reload View and Show Error Messages Below the Inputs */
+
+            /** Then reload view and show error messages below the inputs */
             $viewData = new stdClass();
 
             /** Taking the specific row's data from the table */
@@ -216,7 +219,7 @@ class Product extends CI_Controller
             $viewData->item = $item;
             $viewData->form_error = true;
 
-            /** Reload View */
+            /** Reloading View */
             $this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/index", $viewData);
         }
 
@@ -224,33 +227,47 @@ class Product extends CI_Controller
 
     public function delete($id)
     {
-        /** Starting Delete Statement */
+        /** Taking all image records of Product */
+        $this->load->model("product_image_model");
+
+        $images = $this->product_image_model->get_all(
+            array(
+                "product_id"    => $id
+            )
+        );
+
+        /** Starting delete statement */
         $delete = $this->product_model->delete(
             array(
                 "id" => $id
             )
         );
 
-        /** If Delete Statement is Succesful */
+        /** If Delete Statement is successful */
         if ($delete) {
 
-            /** Set the notification is Success */
+            /** Deleting all image files physically from disk */
+            foreach ($images as $image)
+            {
+                unlink("uploads/{$this->viewFolder}/$image->img_url");
+            }
+
+            /** Set the notification as Success */
             $alert = array(
                 "type" => "success",
                 "title" => "İşlem Başarılı",
                 "text" => "Kayıt başarılı bir şekilde silindi.."
             );
 
-            /** If Delete Statement is Unsuccessful */
+            /** If delete statement is unsuccessful */
         } else {
 
-            /** Set the notification is Error */
+            /** Set the notification as Error */
             $alert = array(
                 "type" => "error",
                 "title" => "İşlem Başarısız",
                 "text" => "Kayıt silme işlemi esnasında bir sorun oluştu.."
             );
-
         }
 
         $this->session->set_flashdata("alert", $alert);
@@ -262,8 +279,10 @@ class Product extends CI_Controller
 
     public function isActiveSetter($id)
     {
+        /** If the posted data is true then set the isActive variable's value 1 else set 0 */
         $isActive = ($this->input->post("data") === "true") ? 1 : 0;
 
+        /** Update the isActive column with isActive varible's value */
         $this->product_model->update(
             array(
                 "id" => $id
@@ -276,13 +295,18 @@ class Product extends CI_Controller
 
     public function rankSetter()
     {
+        /** Set the values of $data array with posted data */
         $data = $this->input->post("data");
 
+        /** Parsing values of $data array and put into the $order array */
         parse_str($data, $order);
 
+        /** Set the values $items array with $order array and set keys as 'ord' and values as 'rank' */
         $items = $order["ord"];
 
+        /** Update all  */
         foreach ($items as $rank => $id) {
+
             $this->product_model->update(
                 array(
                     "id" => $id,
@@ -306,7 +330,7 @@ class Product extends CI_Controller
             )
         );
 
-        /** Taking all images of a specific product from the product_images table */
+        /** Taking all images of a specific parent from the child table */
         $item_images = $this->product_image_model->get_all(
             array(
                 "product_id" => $id
@@ -319,7 +343,7 @@ class Product extends CI_Controller
         $viewData->item = $item;
         $viewData->item_images = $item_images;
 
-        /** Load View */
+        /** Loading View */
         $this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/index", $viewData);
     }
 
@@ -339,12 +363,12 @@ class Product extends CI_Controller
         /** Doing upload by 'do_upload' method */
         $upload = $this->upload->do_upload("file");
 
-        /** If Upload Process is Succesful */
+        /** If Upload Process is successful */
         if ($upload) {
             /** Create a Variable and set with Uploaded File's name */
             $uploaded_file = $this->upload->data("file_name");
 
-            /** Insert Reference Records to product_images Table for uploaded photos */
+            /** Insert reference records to child table for uploaded images */
             $this->product_image_model->add(
                 array(
                     "img_url" => $uploaded_file,
@@ -358,7 +382,7 @@ class Product extends CI_Controller
 
             /** If Upload Process is Unsuccesful */
         } else {
-            /** Set Alert with Error Message */
+            /** Set alert with error message */
             echo "aktarım başarısız";
         }
     }
@@ -401,13 +425,13 @@ class Product extends CI_Controller
             )
         );
 
-        /** If Image Delete Statement is Succesful */
+        /** If Image Delete Statement is successful */
         if ($delete) {
 
-            /** Deleting the file physically from disk */
+            /** Then deleting the file physically from disk */
             unlink("uploads/{$this->viewFolder}/$image->img_url");
 
-            /** Set the notification is Success */
+            /** Set the notification as Success */
             $alert = array(
                 "type" => "success",
                 "title" => "İşlem Başarılı",
@@ -417,7 +441,7 @@ class Product extends CI_Controller
             /** If Image Delete Statement is Unsuccessful */
         } else {
 
-            /** Set the notification is Error */
+            /** Set the notification as Error */
             $alert = array(
                 "type" => "error",
                 "title" => "İşlem Başarısız",
@@ -448,7 +472,7 @@ class Product extends CI_Controller
             )
         );
 
-        /** If Image Delete Statement is Succesful */
+        /** If Image Delete Statement is successful */
         if ($deleteAll) {
 
             /** Deleting files physically from disk */
@@ -456,7 +480,7 @@ class Product extends CI_Controller
                 unlink("uploads/{$this->viewFolder}/$image->img_url");
             }
 
-            /** Set the notification is Success */
+            /** Set the notification as Success */
             $alert = array(
                 "type" => "success",
                 "title" => "İşlem Başarılı",
@@ -466,13 +490,12 @@ class Product extends CI_Controller
             /** If Image Delete Statement is Unsuccessful */
         } else {
 
-            /** Set the notification is Error */
+            /** Set the notification as Error */
             $alert = array(
                 "type" => "error",
                 "title" => "İşlem Başarısız",
                 "text" => "Görsel silme işlemi esnasında bir sorun oluştu.."
             );
-
         }
 
         $this->session->set_flashdata("alert", $alert);
@@ -483,11 +506,13 @@ class Product extends CI_Controller
 
     public function isCoverSetter($id, $parent_id)
     {
+        /** Check if $id and $parent_id arguments is set already */
         if ($id && $parent_id) {
 
+            /** If the posted data is true then set the isCover variable's value 1 else set the 0 */
             $isCover = ($this->input->post("data") === "true") ? 1 : 0;
 
-            /** Setting a record to Cover Image */
+            /** Setting a record to the Cover Image */
             $this->product_image_model->update(
                 array(
                     "id" => $id,
@@ -523,7 +548,7 @@ class Product extends CI_Controller
             $viewData->subViewFolder = "image";
             $viewData->item_images = $item_images;
 
-            /** Reload Render Element View */
+            /** Reload Render Element view */
             $render_html = $this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/render_elements/image_list_v", $viewData, true);
 
             echo $render_html;
@@ -532,8 +557,10 @@ class Product extends CI_Controller
 
     public function imageIsActiveSetter($id)
     {
+        /** If the posted data is true then set the isActive variable's value 1 else set 0 */
         $isActive = ($this->input->post("data") === "true") ? 1 : 0;
 
+        /** Update the isActive column with isActive varible's value */
         $this->product_image_model->update(
             array(
                 "id" => $id,
@@ -546,12 +573,16 @@ class Product extends CI_Controller
 
     public function imageRankSetter()
     {
+        /** Set the values of $data array with posted data */
         $data = $this->input->post("data");
 
+        /** Parsing values of $data array and put into the $order array */
         parse_str($data, $order);
 
+        /** Set the values $images array with $order array and set keys as 'ord' and values as 'rank' */
         $images = $order["ord"];
 
+        /** Update all records of the table for every index of $images array if there is a difference for rank column */
         foreach ($images as $rank => $id) {
             $this->product_image_model->update(
                 array(
