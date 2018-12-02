@@ -16,7 +16,7 @@
                         <?php } ?>
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputPassword1">Ürün Açıklaması</label>
+                        <label>Ürün Açıklaması</label>
                         <textarea name="description" class="m-0" data-plugin="summernote" data-options="{height: 250}">
                         </textarea>
                     </div>

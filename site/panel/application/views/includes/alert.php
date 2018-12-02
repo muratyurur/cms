@@ -2,7 +2,8 @@
 $alert = $this->session->userdata("alert");
 
 if ($alert) {
-    if ($alert["type"] === "success") { ?>
+    if ($alert["type"] === "success")
+    { ?>
 
         <script>
             iziToast.success({
@@ -19,11 +20,12 @@ if ($alert) {
                 layout          : 2
             })
         </script>
-    <?php } else { ?>
+    <?php } elseif ($alert["type"] === "error")
+    { ?>
         <script>
             iziToast.error({
-                title           : '<?php echo $alert->title; ?>',
-                message         : '<?php echo $alert->text; ?>',
+                title           : '<?php echo $alert["title"] ?>',
+                message         : '<?php echo $alert["text"]; ?>',
                 messageSize     : '18px',
                 messageColor    : '#ffffff',
                 theme           : 'dark',

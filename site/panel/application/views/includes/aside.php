@@ -24,14 +24,14 @@
                     </a>
                 </li>
 
-                <li class="has-submenu">
+                <li class="has-submenu open">
                     <a href="javascript:void(0)" class="submenu-toggle">
                         <i class="menu-icon zmdi zmdi-group zmdi-hc-lg"></i>
                         <span class="menu-text">Galeriler</span>
                         <i class="menu-caret zmdi zmdi-hc-sm zmdi-chevron-right"></i>
                     </a>
-                    <ul class="submenu">
-                        <li><a href="buttons.html"><span class="menu-text">Resim Galerileri</span></a></li>
+                    <ul class="submenu" style="display: block">
+                        <li class="active"><a href="buttons.html"><span class="menu-text">Resim Galerileri</span></a></li>
                         <li><a href="buttons.html"><span class="menu-text">Video Galerileri</span></a></li>
                         <li><a href="buttons.html"><span class="menu-text">Dosya Galerileri</span></a></li>
                     </ul>
@@ -64,7 +64,7 @@
                 </li>
 
                 <li>
-                    <a href="<?php echo base_url(); ?>">
+                    <a href="<?php echo base_url("news"); ?>">
                         <i class="menu-icon fa fa-newspaper-o"></i>
                         <span class="menu-text">Haberler</span>
                     </a>
