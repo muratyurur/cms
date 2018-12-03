@@ -18,4 +18,19 @@ class Dashboard extends CI_Controller {
 
         $this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/index", $viewData);
     }
+
+    public function setActiveMenu()
+    {
+        $grandparent = $this->input->post("grandparent");
+        $parent = $this->input->post("parent");
+        $activeItem = $this->input->post("activeItem");
+
+        $array = array(
+            "grandparent"   => $grandparent,
+            "parent"        => $parent,
+            "activeItem"    => $activeItem
+        );
+
+        $this->session->set_userdata($array);
+    }
 }
