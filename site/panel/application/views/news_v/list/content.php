@@ -27,8 +27,8 @@
                         <th>url</th>
                         <th>Başlık</th>
                         <th>Açıklama</th>
-                        <th>Haber Türü</th>
-                        <th>Görsel</th>
+                        <th class="w100">Haber Türü</th>
+                        <th class="w150">Görsel</th>
                         <th class="w75">Durumu</th>
                         <th class="w150">İşlem</th>
                     </thead>
@@ -40,8 +40,35 @@
                             <td class="text-center"><?php echo $item->url ?></td>
                             <td class="text-center"><?php echo $item->title; ?></td>
                             <td><?php echo $item->description; ?></td>
-                            <td><?php echo $item->news_type; ?></td>
-                            <td><?php echo "Görsel buraya gelecek..."; ?></td>
+                            <td class="text-center" style="vertical-align: middle">
+                                <?php if ($item->news_type == "image") { ?>
+                                    <i class="fa fa-picture-o fa-3x" aria-hidden="true"></i>
+                                    <br>
+                                    <p class="text-muted" style="margin: 0px">Resim Haberi</p>
+                                <?php } else if ($item->news_type == "video") { ?>
+                                    <i class="fa fa-youtube fa-3x" aria-hidden="true"></i>
+                                    <br>
+                                    <p class="text-muted" style="margin: 0px">Video Haber</p>
+                                <?php } ?>
+                            </td>
+                            <?php if ($item->news_type == "image") { ?>
+                                <td>
+                                    <img src="<?php echo "uploads/{$viewFolder}/$item->img_url"; ?>"
+                                         alt="<?php echo $item->url; ?>"
+                                         class="img-responsive img-rounded"
+                                         style="margin: 0px auto; max-width: 200px"
+                                         width="100%">
+                                </td>
+                            <?php } else { ?>
+                                <td>
+                                    <img src="https://img.youtube.com/vi/<?php echo $item->video_url; ?>/maxresdefault.jpg"
+                                         alt="<?php echo $item->url; ?>"
+                                         class="img-responsive img-rounded"
+                                         style="margin: 0px auto; max-width: 200px"
+                                         width="100%">
+                                </td>
+                                </td>
+                            <?php } ?>
                             <td class="text-center">
                                 <input
                                         data-url="<?php echo base_url("news/isActiveSetter/$item->id"); ?>"

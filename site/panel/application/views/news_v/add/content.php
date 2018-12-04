@@ -24,19 +24,19 @@
                         <label for="control-demo-6">Haber Türü</label>
                         <div id="control-demo-6">
                             <select name="news_type" class="form-control news-type-select">
-                                <option <?php (isset($news_type) && $news_type == "image") ? "selected" : ""; ?> value="image">Resim</option>
-                                <option <?php (isset($news_type) && $news_type == "video") ? "selected" : ""; ?> value="video">Video</option>
+                                <option <?php echo (isset($news_type) && $news_type == "image") ? "selected" : ""; ?> value="image">Resim</option>
+                                <option <?php echo (isset($news_type) && $news_type == "video") ? "selected" : ""; ?> value="video">Video</option>
                             </select>
                         </div>
                     </div>
 
                     <?php if (isset($form_error)) { ?>
 
-                    <div class="form-group image-upload-container">
+                    <div class="form-group image-upload-container" style="display: <?php echo (isset($news_type) && $news_type == "image") ? "block" : "none"; ?>">
                         <label>Görsel Seçiniz</label>
                         <input class="form-control" type="file" name="img_url">
                     </div>
-                    <div class="form-group video-url-container">
+                    <div class="form-group video-url-container" style="display: <?php echo (isset($news_type) && $news_type == "video") ? "block" : "none"; ?>">
                         <label>Video URL</label>
                         <input name="video_url" type="text" class="form-control" placeholder="Video linkini buraya girebilirsiniz...">
                         <?php if (isset($form_error)) { ?>
@@ -46,11 +46,11 @@
 
                     <?php } else { ?>
 
-                    <div class="form-group image-upload-container" style="display: <?php (isset($news_type) && $news_type == "image") ? "block" : "none"; ?>">
+                    <div class="form-group image-upload-container">
                         <label>Görsel Seçiniz</label>
                         <input class="form-control" type="file" name="img_url">
                     </div>
-                    <div class="form-group video-url-container" style="display: <?php (isset($news_type) && $news_type == "video") ? "block" : "none"; ?>">
+                    <div class="form-group video-url-container">
                         <label>Video URL</label>
                         <input name="video_url" type="text" class="form-control" placeholder="Video linkini buraya girebilirsiniz...">
                     </div>

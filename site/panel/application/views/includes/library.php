@@ -85,3 +85,11 @@
         ]
     };
 </script>
+
+<script>
+    var selectedMenu = $(".app-menu").find('a[href$="' + location.href.substr(location.href.indexOf(location.host) + location.host.length) + '"]').closest('li');
+
+    selectedMenu.addClass("active open");
+    selectedMenu.parents("li").addClass("active open");
+    document.getElementById(selectedMenu.parent().attr('id')).style.display='block';
+</script>

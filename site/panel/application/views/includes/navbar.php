@@ -42,12 +42,12 @@
                     <a style="padding-right: 10px;" href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                         <div class="avatar avatar-md avatar-circle" style="margin-top: -8px; margin-right: 0px; top: -2px;">
                                 <img class="img-responsive"
-                                     src="<?php echo base_url("assets"); ?>/assets/images/user.png"
+                                     src="<?php echo base_url("uploads/users_v/me.jpg"); ?>"
                                      alt="avatar"
                                      style="display: inline; width: 40px; height: 40px;"
                                 />
                         </div>
-                        <span style="font-size: larger; margin-left: 0px">Murat Yürür</span>
+                        <span style="font-size: larger; margin-left: 0px">Murat Yürür <p class="text-muted" style="display: inline; font-size: small">System Admin</p>
                     </a>
                     <ul class="dropdown-menu animated flipInY">
                         <li><a style="padding: 10px 16px" href="javascript:void(0)"><i class="zmdi m-r-md zmdi-hc-lg zmdi-account-box"></i>Kullanıcı Profili</a></li>
