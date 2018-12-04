@@ -31,7 +31,7 @@
                         <?php if ($item->news_type == "image") { ?>
                             <img src="<?php echo base_url("uploads/news_v/$item->img_url"); ?>"
                                  class="img-responsive img-rounded"
-                                 alt="">
+                                 alt="<?php echo $item->url; ?>">
                         <?php } else { ?>
                             <iframe
                                     width="100%"
@@ -40,7 +40,6 @@
                                     frameborder="0"
                                     allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                                     allowfullscreen>
-
                             </iframe>
                         <?php } ?>
                     </div>
