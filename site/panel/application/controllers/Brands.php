@@ -1,14 +1,14 @@
 <?php
 
-class References extends CI_Controller
+class Brands extends CI_Controller
 {
     public function __construct()
     {
         parent::__construct();
-        $this->viewFolder = "references_v";
+        $this->viewFolder = "brands_v";
 
         /** Load Models */
-        $this->load->model("reference_model");
+        $this->load->model("brand_model");
     }
 
     public function index()
@@ -16,7 +16,7 @@ class References extends CI_Controller
         $viewData = new stdClass();
 
         /** Taking all data from the table */
-        $items = $this->reference_model->get_all(
+        $items = $this->brand_model->get_all(
             array(), "rank ASC"
         );
 
@@ -57,7 +57,7 @@ class References extends CI_Controller
             $this->session->set_flashdata("alert", $alert);
 
             /** Redirect to Module's List Page */
-            redirect(base_url("references/new_form"));
+            redirect(base_url("brands/new_form"));
 
             die();
         }
@@ -98,11 +98,9 @@ class References extends CI_Controller
                 /** Create a Variable and set with Uploaded File's name */
                 $uploaded_file = $this->upload->data("file_name");
 
-                $insert = $this->reference_model->add(
+                $insert = $this->brand_model->add(
                     array(
                         "title" => $this->input->post("title"),
-                        "description" => $this->input->post("description"),
-                        "url" => convertToSEO($this->input->post("title")),
                         "img_url" => $uploaded_file,
                         "rank" => 0,
                         "isActive" => 1,
@@ -145,13 +143,13 @@ class References extends CI_Controller
                 $this->session->set_flashdata("alert", $alert);
 
                 /** Redirect to Module's Add New Page */
-                redirect(base_url("references/new_form"));
+                redirect(base_url("brands/new_form"));
             }
 
             $this->session->set_flashdata("alert", $alert);
 
             /** Redirect to Module's List Page */
-            redirect(base_url("references"));
+            redirect(base_url("brands"));
 
             /** If Validation Unsuccessful */
         } else {
@@ -174,7 +172,7 @@ class References extends CI_Controller
         $viewData = new stdClass();
 
         /** Taking the specific row's data from the table */
-        $item = $this->reference_model->get(
+        $item = $this->brand_model->get(
             array(
                 "id" => $id
             )
@@ -230,7 +228,7 @@ class References extends CI_Controller
                 /** If Upload Process is Succesful */
                 if ($upload) {
 
-                    $item = $this->reference_model->get(
+                    $item = $this->brand_model->get(
                         array(
                             "id"    => $id
                         )
@@ -244,8 +242,6 @@ class References extends CI_Controller
 
                     $data = array(
                         "title" => $this->input->post("title"),
-                        "description" => $this->input->post("description"),
-                        "url" => convertToSEO($this->input->post("title")),
                         "img_url" => $uploaded_file
                     );
 
@@ -262,17 +258,15 @@ class References extends CI_Controller
                     $this->session->set_flashdata("alert", $alert);
 
                     /** Redirect to Module's List Page */
-                    redirect(base_url("references/update_form/$id"));
+                    redirect(base_url("brands/update_form/$id"));
                 }
             } else {
                 $data = array(
-                    "title" => $this->input->post("title"),
-                    "description" => $this->input->post("description"),
-                    "url" => convertToSEO($this->input->post("title"))
+                    "title" => $this->input->post("title")
                 );
             }
 
-            $update = $this->reference_model->update(array("id" => $id), $data);
+            $update = $this->brand_model->update(array("id" => $id), $data);
 
             /** If Update Statement Succesful */
             if ($update) {
@@ -299,7 +293,7 @@ class References extends CI_Controller
             $this->session->set_flashdata("alert", $alert);
 
             /** Redirect to Module's List Page */
-            redirect(base_url("references"));
+            redirect(base_url("brands"));
 
             /** If Validation Unsuccessful */
 
@@ -308,7 +302,7 @@ class References extends CI_Controller
             $viewData = new stdClass();
 
             /** Taking the specific row's data from the table */
-            $item = $this->reference_model->get(
+            $item = $this->brand_model->get(
                 array(
                     "id" => $id
                 )
@@ -327,14 +321,14 @@ class References extends CI_Controller
 
     public function delete($id)
 {
-    /** Taking the specific row's data from referencess table */
-    $item = $this->reference_model->get(
+    /** Taking the specific row's data from brandss table */
+    $item = $this->brand_model->get(
         array(
             "id" => $id
         )
     );
     /** Starting Delete Statement */
-    $delete = $this->reference_model->delete(
+    $delete = $this->brand_model->delete(
         array(
             "id" => $id
         )
@@ -368,7 +362,7 @@ class References extends CI_Controller
     $this->session->set_flashdata("alert", $alert);
 
     /** Redirect to Module's List Page */
-    redirect(base_url("references"));
+    redirect(base_url("brands"));
 
 }
 
@@ -378,7 +372,7 @@ class References extends CI_Controller
     $isActive = ($this->input->post("data") === "true") ? 1 : 0;
 
     /** Update the isActive column with isActive varible's value */
-    $this->reference_model->update(
+    $this->brand_model->update(
         array(
             "id" => $id
         ),
@@ -402,7 +396,7 @@ class References extends CI_Controller
     /** Update all  */
     foreach ($items as $rank => $id) {
 
-        $this->reference_model->update(
+        $this->brand_model->update(
             array(
                 "id" => $id,
                 "rank!=" => $rank
