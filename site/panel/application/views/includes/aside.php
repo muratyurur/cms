@@ -24,16 +24,10 @@
                 </li>
 
                 <li class="has-submenu">
-                    <a class="submenu-toggle">
+                    <a href="<?php echo base_url("galleries"); ?>">
                         <i class="menu-icon zmdi zmdi-group zmdi-hc-lg"></i>
                         <span class="menu-text">Galeriler</span>
-                        <i class="menu-caret zmdi zmdi-hc-sm zmdi-chevron-right"></i>
                     </a>
-                    <ul class="submenu" id="galleries-submenu">
-                        <li><a href="<?php echo base_url("image-gallery"); ?>"><span class="menu-text">Resim Galerileri</span></a></li>
-                        <li><a href="<?php echo base_url("video-gallery"); ?>"><span class="menu-text">Video Galerileri</span></a></li>
-                        <li><a href="<?php echo base_url("file-gallery"); ?>"><span class="menu-text">Dosya Galerileri</span></a></li>
-                    </ul>
                 </li>
 
                 <li class="has-submenu">

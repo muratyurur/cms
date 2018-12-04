@@ -14,4 +14,23 @@ function get_readable_date($date)
     return strftime('%d %B %Y %A %H:%M', strtotime($date));
 }
 
+function rrmdir($src)
+{
+    $dir = opendir($src);
+    while (false !== ($file = readdir($dir))) {
+        if (($file != '.') && ($file != '..')) {
+            $full = $src . '/' . $file;
+            if (is_dir($full)) {
+                rrmdir($full);
+            } else {
+                unlink($full);
+            }
+        }
+    }
+    closedir($dir);
+    rmdir($src);
+
+    return true;
+}
+
 ?>
