@@ -2,12 +2,12 @@
     <div class="col-md-12">
         <div class="widget">
             <div class="widget-body">
-                <form data-url="<?php echo base_url("galleries/refresh_file_list/$item->id"); ?>"
-                      action="<?php echo base_url("galleries/file_upload/$item->id"); ?>"
+                <form data-url="<?php echo base_url("galleries/refresh_file_list/$item->id/$item->gallery_type"); ?>"
+                      action="<?php echo base_url("galleries/file_upload/$item->id/$item->gallery_type/$item->folder_name"); ?>"
                       id="dropzone"
                       class="dropzone"
                       data-plugin="dropzone"
-                      data-options="{ url: '<?php echo base_url("galleries/file_upload/$item->id"); ?>'}">
+                      data-options="{ url: '<?php echo base_url("galleries/file_upload/$item->id/$item->gallery_type/$item->folder_name"); ?>'}">
                     <div class="dz-message">
                         <h3 class="m-h-lg">Yüklemek istediğiniz görselleri buraya sürükleyip bırakabilirsiniz</h3>
                         <p class="m-b-lg text-muted">(Yüklemek için dosyalarınızı sürükleyip bırakabilir ya da buraya
@@ -32,7 +32,7 @@
                     <i class="fa fa-chevron-left"></i> Geri Dön
                 </button>
             </a>
-            <a href="<?php echo base_url("galleries/fileDeleteAll/$item->id"); ?>">
+            <a href="<?php echo base_url("galleries/fileDeleteAll/$item->id/$item->gallery_type"); ?>">
                 <button class="btn btn-sm btn-deepOrange btn-outline">
                     <i class="fa fa-trash"></i> Tümünü Sil
                 </button>
@@ -40,7 +40,7 @@
         </div><!-- END column -->
         <div class="col-md-12">
             <div class="widget">
-                <div class="widget-body file_list_container">
+                <div class="widget-body image_list_container">
 
                     <?php $this->load->view("{$viewFolder}/{$subViewFolder}/render_elements/file_list_v"); ?>
 

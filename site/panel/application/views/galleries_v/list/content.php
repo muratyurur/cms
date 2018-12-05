@@ -22,14 +22,14 @@
                 <table id="datatable-responsive"
                        class="table table-striped table-hover table-bordered content-container">
                     <thead>
-                        <th class="w20"><i class="fa fa-reorder"></i></th>
-                        <th class="w50">#id</th>
-                        <th>Galeri Adı</th>
-                        <th class="w100">Galeri Türü</th>
-                        <th>Klasör Adı</th>
-                        <th>url</th>
-                        <th class="w75">Durumu</th>
-                        <th class="w300">İşlem</th>
+                    <th class="w20"><i class="fa fa-reorder"></i></th>
+                    <th class="w50">#id</th>
+                    <th>Galeri Adı</th>
+                    <th class="w100">Galeri Türü</th>
+                    <th>Klasör Adı</th>
+                    <th>url</th>
+                    <th class="w75">Durumu</th>
+                    <th class="w300">İşlem</th>
                     </thead>
                     <tbody class="sortable" data-url="<?php echo base_url("galleries/rankSetter"); ?>">
                     <?php foreach ($items as $item) { ?>
@@ -61,18 +61,18 @@
                                         type="checkbox"
                                         data-switchery
                                         data-color="#188ae2"
-                                        <?php echo ($item->isActive) ? "checked" : "" ?>
+                                    <?php echo ($item->isActive) ? "checked" : "" ?>
                                 />
                             </td>
                             <td class="text-center">
-                                    <button
+                                <button
                                         data-url="<?php echo base_url("galleries/delete/$item->id"); ?>"
                                         type="button"
                                         class="btn btn-danger btn-sm btn-outline remove-btn"
-                                    >
-                                        <i class="fa fa-trash-o"></i>
-                                        Sil
-                                    </button>
+                                >
+                                    <i class="fa fa-trash-o"></i>
+                                    Sil
+                                </button>
                                 <a href="<?php echo base_url("galleries/update_form/$item->id"); ?>">
                                     <button type="button" class="btn btn-primary btn-sm btn-outline">
                                         <i class="fa fa-pencil-square-o"></i>
@@ -80,14 +80,24 @@
                                     </button>
                                 </a>
                                 <?php
-                                if ($item->gallery_type == "image")
+                                if ($item->gallery_type == "image") {
+
                                     $button_image = "fa-picture-o";
-                                else if ($item->gallery_type == "video")
-                                    $button_image = "fa-youtube";
-                                else if ($item->gallery_type == "file")
+                                    $button_url = "galleries/upload_form/$item->id";
+
+                                } else if ($item->gallery_type == "file") {
+
                                     $button_image = "fa-folder-open-o";
+                                    $button_url = "galleries/upload_form/$item->id";
+
+                                } else if ($item->gallery_type == "video") {
+
+                                    $button_image = "fa-youtube";
+                                    $button_url = "galleries/gallery_video_list/$item->id";
+
+                                }
                                 ?>
-                                <a href="<?php echo base_url("galleries/upload_form/$item->id"); ?>">
+                                <a href="<?php echo base_url($button_url); ?>">
                                     <button type="button" class="btn btn-inverse btn-sm btn-outline">
                                         <i class="fa <?php echo $button_image; ?>"></i>
                                         Galeri İçeriği
