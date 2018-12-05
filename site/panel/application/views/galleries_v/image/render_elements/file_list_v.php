@@ -1,6 +1,6 @@
 <?php if (empty($item_images)) { ?>
     <div class="alert alert-warning text-center" style="padding: 8px; margin-bottom: 0px; s">
-        <p style="font-size: larger">Henüz bu ürün için bir görsel yüklenmemiş...</p>
+        <p style="font-size: larger">Henüz bu galeri için bir dosya yüklenmemiş...</p>
     </div>
 <?php } else { ?>
     <table id="datatable-responsive" class="table table-bordered table-hover table-striped content-container">
@@ -13,7 +13,7 @@
         <th class="w50">Kapak Resmi</th>
         <th class="w100">İşlem</th>
         </thead>
-        <tbody class="sortable" data-url="<?php echo base_url("product/imageRankSetter"); ?>">
+        <tbody class="sortable" data-url="<?php echo base_url("galleries/fileRankSetter"); ?>">
         <?php foreach ($item_images as $image) { ?>
             <tr id="ord-<?php echo $image->id; ?>">
                 <td class="text-center"><i class="fa fa-reorder"></i></td>
@@ -27,7 +27,7 @@
                 <td><?php echo $image->img_url; ?></td>
                 <td class="text-center">
                     <input
-                        data-url="<?php echo base_url("product/imageIsActiveSetter/$image->id"); ?>"
+                        data-url="<?php echo base_url("galleries/fileIsActiveSetter/$image->id"); ?>"
                         class="isActive"
                         type="checkbox"
                         data-switchery
@@ -37,7 +37,7 @@
                 </td>
                 <td class="text-center">
                     <input
-                            data-url="<?php echo base_url("product/isCoverSetter/$image->id/$image->product_id"); ?>"
+                            data-url="<?php echo base_url("galleries/isCoverSetter/$image->id/$image->galleries_id"); ?>"
                             class="isCover"
                             type="checkbox"
                             data-switchery
@@ -47,7 +47,7 @@
                 </td>
                 <td class="text-center">
                     <button
-                        data-url="<?php echo base_url("product/imageDelete/$image->id/$image->product_id"); ?>"
+                        data-url="<?php echo base_url("galleries/fileDelete/$image->id/$image->galleries_id"); ?>"
                         type="button"
                         class="btn btn-danger btn-sm btn-outline remove-btn"
                     >

@@ -79,10 +79,18 @@
                                         Düzenle
                                     </button>
                                 </a>
-                                <a href="<?php echo base_url("galleries/image_form/$item->id"); ?>">
+                                <?php
+                                if ($item->gallery_type == "image")
+                                    $button_image = "fa-picture-o";
+                                else if ($item->gallery_type == "video")
+                                    $button_image = "fa-youtube";
+                                else if ($item->gallery_type == "file")
+                                    $button_image = "fa-folder-open-o";
+                                ?>
+                                <a href="<?php echo base_url("galleries/upload_form/$item->id"); ?>">
                                     <button type="button" class="btn btn-inverse btn-sm btn-outline">
-                                        <i class="fa fa-image"></i>
-                                        Ürün Görselleri
+                                        <i class="fa <?php echo $button_image; ?>"></i>
+                                        Galeri İçeriği
                                     </button>
                                 </a>
                             </td>

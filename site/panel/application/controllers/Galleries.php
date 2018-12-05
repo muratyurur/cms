@@ -11,6 +11,8 @@ class Galleries extends CI_Controller
         /** Loading Models */
         $this->load->model("gallery_model");
         $this->load->model("image_model");
+        $this->load->model("video_model");
+        $this->load->model("file_model");
     }
 
     public function index()
@@ -86,7 +88,7 @@ class Galleries extends CI_Controller
                     /** Set the notification as Error */
                     $alert = array(
                         "title" => "İşlem Başarısız",
-                        "text" => "Galeri Üretilirken problem oluştur. (Yetki Hatası)",
+                        "text" => "Galeri Üretilirken problem oluştu. (Yetki Hatası)",
                         "type" => "error"
                     );
 
@@ -410,7 +412,7 @@ class Galleries extends CI_Controller
         }
     }
 
-    public function image_form($id)
+    public function upload_form($id)
     {
         $viewData = new stdClass();
 
@@ -421,12 +423,33 @@ class Galleries extends CI_Controller
             )
         );
 
-        /** Taking all images of a specific parent from the child table */
-        $item_images = $this->image_model->get_all(
-            array(
-                "galleries_id" => $id
-            ), "rank ASC"
-        );
+        if ($item->gallery_type == "image")
+        {
+            /** Taking all images of a specific parent from the child table */
+            $item_images = $this->image_model->get_all(
+                array(
+                    "gallery_id" => $id
+                ), "rank ASC"
+            );
+        }
+        elseif ($item->gallery_type == "file")
+        {
+            /** Taking all files of a specific parent from the child table */
+            $item_images = $this->file_model->get_all(
+                array(
+                    "gallery_id" => $id
+                ), "rank ASC"
+            );
+        }
+        else
+        {
+            /** Taking all videos of a specific parent from the child table */
+            $item_images = $this->video_model->get_all(
+                array(
+                    "gallery_id" => $id
+                ), "rank ASC"
+            );
+        }
 
         /** Defining data to be sent to view */
         $viewData->viewFolder = $this->viewFolder;
@@ -438,7 +461,7 @@ class Galleries extends CI_Controller
         $this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/index", $viewData);
     }
 
-    public function image_upload($id)
+    public function file_upload($id)
     {
         /** Taking the name of uploaded file */
         $file_name = convertToSEO(pathinfo($_FILES["file"]["name"], PATHINFO_FILENAME)) . "." . pathinfo($_FILES["file"]["name"], PATHINFO_EXTENSION);
@@ -478,7 +501,7 @@ class Galleries extends CI_Controller
         }
     }
 
-    public function refresh_image_list($id)
+    public function refresh_file_list($id)
     {
         $viewData = new stdClass();
 
@@ -500,7 +523,7 @@ class Galleries extends CI_Controller
         echo $render_html;
     }
 
-    public function imageDelete($id, $parent_id)
+    public function fileDelete($id, $parent_id)
     {
         /** Taking the specific row's data from galleriess table */
         $image = $this->image_model->get(
@@ -547,7 +570,7 @@ class Galleries extends CI_Controller
         redirect(base_url("galleries/image_form/$parent_id"));
     }
 
-    public function imageDeleteAll($parent_id)
+    public function fileDeleteAll($parent_id)
     {
         /** Taking the specific row's data from galleriess table */
         $images = $this->image_model->get_all(
@@ -646,7 +669,7 @@ class Galleries extends CI_Controller
         }
     }
 
-    public function imageIsActiveSetter($id)
+    public function fileIsActiveSetter($id)
     {
         /** If the posted data is true then set the isActive variable's value 1 else set 0 */
         $isActive = ($this->input->post("data") === "true") ? 1 : 0;
@@ -662,7 +685,7 @@ class Galleries extends CI_Controller
         );
     }
 
-    public function imageRankSetter()
+    public function fileRankSetter()
     {
         /** Set the values of $data array with posted data */
         $data = $this->input->post("data");
