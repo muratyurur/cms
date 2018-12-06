@@ -17,7 +17,7 @@
                 </li>
 
                 <li>
-                    <a href="<?php echo base_url("email_settings"); ?>">
+                    <a href="<?php echo base_url("emailsettings"); ?>">
                         <i class="menu-icon zmdi zmdi-email zmdi-hc-lg"></i>
                         <span class="menu-text">ePosta Ayarları</span>
                     </a>

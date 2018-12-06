@@ -74,7 +74,7 @@ a:focus {
 
 a:hover {
 	text-decoration: none;
-  color: #6675df;
+  color: #0089DD;
 }
 
 /*---------------------------------------------*/
@@ -86,7 +86,7 @@ p {
 	font-family: Poppins-Regular;
 	font-size: 14px;
 	line-height: 1.7;
-	color: #666666;
+	/*color: #666666;*/
 	margin: 0px;
 }
 
@@ -159,7 +159,7 @@ iframe {
 [ Text ]*/
 .txt1 {
   font-family: Montserrat-Regular;
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.4;
   color: #555555;
 }
@@ -481,7 +481,7 @@ input.input100 {
   background: #0089DD;
 
   font-family: Montserrat-Bold;
-  font-size: 12px;
+  font-size: 14px;
   color: #fff;
   line-height: 1.2;
   text-transform: uppercase;

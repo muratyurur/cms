@@ -12,7 +12,7 @@ class Userop extends CI_Controller
 
     public function __construct()
     {
-    	parent::__construct();
+        parent::__construct();
 
         $this->viewFolder = "users_v";
 
@@ -54,8 +54,7 @@ class Userop extends CI_Controller
         );
 
         /** Run Form Validation */
-        if ($this->form_validation->run() == false)
-        {
+        if ($this->form_validation->run() == false) {
             /** Reload View and Show Error Messages Below the Inputs */
             $viewData = new stdClass();
 
@@ -69,19 +68,18 @@ class Userop extends CI_Controller
         } else {
             $user = $this->user_model->get(
                 array(
-                    "email"     => $this->input->post("user_email"),
-                    "password"  => md5($this->input->post("user_password")),
-                    "isActive"  => 1
+                    "email" => $this->input->post("user_email"),
+                    "password" => md5($this->input->post("user_password")),
+                    "isActive" => 1
                 )
             );
 
-            if ($user)
-            {
+            if ($user) {
                 /** Set the notification is Success */
                 $alert = array(
-                    "type"  => "success",
+                    "type" => "success",
                     "title" => "Kullanıcı Girişi Başarılı",
-                    "text"  => "Hoşgeldiniz <b>$user->full_name</b>"
+                    "text" => "Hoşgeldiniz $user->full_name"
                 );
 
                 $this->session->set_userdata("user", $user);
@@ -92,9 +90,9 @@ class Userop extends CI_Controller
             } else {
                 /** Set the notification is Success */
                 $alert = array(
-                    "type"  => "error",
+                    "type" => "error",
                     "title" => "Kullanıcı Girişi Başarısız",
-                    "text"  => "Lütfen bilgileri kontrol ederek tekrar deneyin"
+                    "text" => "Lütfen bilgileri kontrol ederek tekrar deneyin"
                 );
 
                 $this->session->set_flashdata("alert", $alert);
@@ -107,8 +105,55 @@ class Userop extends CI_Controller
 
     public function logout()
     {
+        $user = $this->session->userdata("user");
+
         $this->session->unset_userdata("user");
 
-        redirect(base_url("login"));
+        if ($user) {
+
+            /** Set the notification is Success */
+            $alert = array(
+                "type" => "success",
+                "title" => "Çıkış İşlemi Başarılı",
+                "text" => "Kullanıcı oturumu başarıyla sonlandırıldı."
+            );
+
+            $this->session->set_flashdata("alert", $alert);
+
+            /** Redirect to Dashboard Page */
+            redirect(base_url("login"));
+        }
+    }
+
+    function send_email()
+    {
+        $config = array(
+            "protocol"  => "smtp",
+            "smtp_host"  => "ssl://smtp.yandex.com.tr",
+            "smtp_port"  => "465",
+            "smtp_user"  => "bilgi@muratyurur.com",
+            "smtp_pass"  => "My190782!",
+            "starttls"  => true,
+            "charset"  => "utf-8",
+            "mailtype"  => "html",
+            "wordwrap"  => true,
+            "newline"  => "\r\n",
+        );
+
+        $this->load->library("email", $config);
+
+        $this->email->from("bilgi@muratyurur.com", "Yönetim Paneli");
+        $this->email->to("admin@muratyurur.com");
+        $this->email->subject("CMS ePosta deneme çalışması");
+        $this->email->message("Deneme ePostası");
+
+        $send = $this->email->send();
+
+        if ($send)
+        {
+            echo "ePosta başarıyla gönderilmiştir.";
+        } else {
+            echo $this->email->print_debugger();
+        }
     }
 }

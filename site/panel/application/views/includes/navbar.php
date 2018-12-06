@@ -44,7 +44,7 @@
                         <div class="avatar avatar-md avatar-circle" style="margin-top: -8px; margin-right: 0px; top: -2px;">
                                 <img class="img-responsive"
                                      src="<?php echo base_url("uploads/users_v/$user->img_url"); ?>"
-                                     alt="avatar"
+                                     alt="<?php echo base_url("uploads/users_v/$user->user_name"); ?>"
                                      style="display: inline; width: 40px; height: 40px;"
                                 />
                         </div>
