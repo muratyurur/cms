@@ -1,3 +1,4 @@
+<?php $user = get_active_user(); ?>
 <nav id="app-navbar" class="navbar navbar-inverse navbar-fixed-top primary">
 
     <!-- navbar header -->
@@ -42,17 +43,17 @@
                     <a style="padding-right: 10px;" href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                         <div class="avatar avatar-md avatar-circle" style="margin-top: -8px; margin-right: 0px; top: -2px;">
                                 <img class="img-responsive"
-                                     src="<?php echo base_url("uploads/users_v/me.jpg"); ?>"
+                                     src="<?php echo base_url("uploads/users_v/$user->img_url"); ?>"
                                      alt="avatar"
                                      style="display: inline; width: 40px; height: 40px;"
                                 />
                         </div>
-                        <span style="font-size: larger; margin-left: 0px">Murat Yürür <p class="text-muted" style="display: inline; font-size: small">System Admin</p>
+                        <span style="font-size: larger; margin-left: 0px"><?php echo $user->full_name; ?> <p class="text-muted" style="display: inline; font-size: small"><?php echo $user->title; ?></p>
                     </a>
                     <ul class="dropdown-menu animated flipInY">
-                        <li><a style="padding: 10px 16px" href="javascript:void(0)"><i class="zmdi m-r-md zmdi-hc-lg zmdi-account-box"></i>Kullanıcı Profili</a></li>
-                        <li><a style="padding: 10px 16px" href="javascript:void(0)"><i class="zmdi m-r-md zmdi-hc-lg zmdi-key"></i>Şifremi Değiştir</a></li>
-                        <li><a style="padding: 10px 16px" href="javascript:void(0)"><i class="zmdi m-r-md zmdi-hc-lg zmdi-power"></i>Güvenli Çıkış</a></li>
+                        <li><a style="padding: 10px 16px" href="<?php echo base_url("users/update_form/$user->id"); ?>"><i class="zmdi m-r-md zmdi-hc-lg zmdi-account-box"></i>Kullanıcı Profili</a></li>
+                        <li><a style="padding: 10px 16px" href="<?php echo base_url("users/update_password_form/$user->id"); ?>"><i class="zmdi m-r-md zmdi-hc-lg zmdi-key"></i>Şifremi Değiştir</a></li>
+                        <li><a style="padding: 10px 16px" href="<?php echo base_url("logout"); ?>"><i class="zmdi m-r-md zmdi-hc-lg zmdi-power"></i>Güvenli Çıkış</a></li>
                     </ul>
                 </li>
 

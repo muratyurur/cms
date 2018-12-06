@@ -1,17 +1,17 @@
 <?php
 
-class References extends CI_Controller
+class Users extends CI_Controller
 {
     public function __construct()
     {
         parent::__construct();
-        $this->viewFolder = "references_v";
+        $this->viewFolder = "users_v";
 
         if (!get_active_user())
             redirect(base_url("login"));
 
         /** Load Models */
-        $this->load->model("reference_model");
+        $this->load->model("user_model");
     }
 
     public function index()
@@ -19,8 +19,8 @@ class References extends CI_Controller
         $viewData = new stdClass();
 
         /** Taking all data from the table */
-        $items = $this->reference_model->get_all(
-            array(), "rank ASC"
+        $items = $this->user_model->get_all(
+            array()
         );
 
         /** Defining data to be sent to view */
@@ -60,18 +60,27 @@ class References extends CI_Controller
             $this->session->set_flashdata("alert", $alert);
 
             /** Redirect to Module's List Page */
-            redirect(base_url("references/new_form"));
+            redirect(base_url("users/new_form"));
 
             die();
         }
 
         /** Validation Rules */
-        $this->form_validation->set_rules("title", "Başlık", "trim|required");
+        $this->form_validation->set_rules("user_name", "Kullanıcı Adı", "trim|required|is_unique[users.user_name]");
+        $this->form_validation->set_rules("full_name", "Ad Soyad", "trim|required");
+        $this->form_validation->set_rules("title", "Unvan", "trim|required");
+        $this->form_validation->set_rules("email", "ePosta", "trim|required|valid_email|is_unique[users.email]");
+        $this->form_validation->set_rules("password", "Şifre", "trim|required|min_length[6]");
+        $this->form_validation->set_rules("re-password", "Şifre Tekrar", "trim|required|matches[password]");
 
         /** Translate Validation Messages */
         $this->form_validation->set_message(
             array(
-                "required" => "<b>{field}</b> alanı boş bırakılamaz..."
+                "required" => "<b>{field}</b> alanı boş bırakılamaz...",
+                "valid_email" => "Lütfen geçerli bir ePosta adresi giriniz...",
+                "is_unique" => "Bu <b>{field}</b> daha önceden kullanılmış...",
+                "matches" => "Girmiş olduğunuz şifreler birbiriyle uyuşmamaktadır...",
+                "min_length" => "<b>{field}</b> en az {param} karaketer içermelidir..."
             )
         );
 
@@ -101,13 +110,14 @@ class References extends CI_Controller
                 /** Create a Variable and set with Uploaded File's name */
                 $uploaded_file = $this->upload->data("file_name");
 
-                $insert = $this->reference_model->add(
+                $insert = $this->user_model->add(
                     array(
+                        "user_name" => $this->input->post("user_name"),
+                        "full_name" => $this->input->post("full_name"),
                         "title" => $this->input->post("title"),
-                        "description" => $this->input->post("description"),
-                        "url" => convertToSEO($this->input->post("title")),
+                        "email" => $this->input->post("email"),
+                        "password" => md5($this->input->post("password")),
                         "img_url" => $uploaded_file,
-                        "rank" => 0,
                         "isActive" => 1,
                         "createdAt" => date("Y-m-d H:i:s")
                     )
@@ -133,6 +143,13 @@ class References extends CI_Controller
                         "text" => "Kayıt işlemi esnasında bir sorun oluştu.."
                     );
 
+                    $this->session->set_flashdata("alert", $alert);
+
+                    /** Redirect to Module's Add New Page */
+                    redirect(base_url("users/new_form"));
+
+                    die();
+
                 }
 
                 /** If Upload Process is Unsuccesful */
@@ -148,13 +165,15 @@ class References extends CI_Controller
                 $this->session->set_flashdata("alert", $alert);
 
                 /** Redirect to Module's Add New Page */
-                redirect(base_url("references/new_form"));
+                redirect(base_url("users/new_form"));
             }
 
             $this->session->set_flashdata("alert", $alert);
 
             /** Redirect to Module's List Page */
-            redirect(base_url("references"));
+            redirect(base_url("users"));
+
+            die();
 
             /** If Validation Unsuccessful */
         } else {
@@ -177,7 +196,7 @@ class References extends CI_Controller
         $viewData = new stdClass();
 
         /** Taking the specific row's data from the table */
-        $item = $this->reference_model->get(
+        $item = $this->user_model->get(
             array(
                 "id" => $id
             )
@@ -197,13 +216,29 @@ class References extends CI_Controller
         /** Load Form Validation Library */
         $this->load->library("form_validation");
 
+        $old_user = $this->user_model->get(
+            array(
+                "id"    => $id
+            )
+        );
+
+        if ($old_user->user_name != $this->input->post("user_name")){
+            $this->form_validation->set_rules("user_name", "Kullanıcı Adı", "trim|required|is_unique[users.user_name]");
+        }
+        if ($old_user->email != $this->input->post("email")){
+            $this->form_validation->set_rules("email", "ePosta", "trim|required|valid_email|is_unique[users.email]");
+        }
+
         /** Validation Rules */
-        $this->form_validation->set_rules("title", "Başlık", "trim|required");
+        $this->form_validation->set_rules("full_name", "Ad Soyad", "trim|required");
+        $this->form_validation->set_rules("title", "Unvan", "trim|required");
 
         /** Translate Validation Messages */
         $this->form_validation->set_message(
             array(
-                "required" => "<b>{field}</b> alanı boş bırakılamaz..."
+                "required" => "<b>{field}</b> alanı boş bırakılamaz...",
+                "valid_email" => "Lütfen geçerli bir ePosta adresi giriniz...",
+                "is_unique" => "Bu <b>{field}</b> daha önceden kullanılmış...",
             )
         );
 
@@ -233,7 +268,7 @@ class References extends CI_Controller
                 /** If Upload Process is Succesful */
                 if ($upload) {
 
-                    $item = $this->reference_model->get(
+                    $item = $this->user_model->get(
                         array(
                             "id"    => $id
                         )
@@ -246,10 +281,11 @@ class References extends CI_Controller
                     $uploaded_file = $this->upload->data("file_name");
 
                     $data = array(
-                        "title" => $this->input->post("title"),
-                        "description" => $this->input->post("description"),
-                        "url" => convertToSEO($this->input->post("title")),
-                        "img_url" => $uploaded_file
+                        "user_name" => $this->input->post("user_name"),
+                        "full_name" => $this->input->post("full_name"),
+                        "title"     => $this->input->post("title"),
+                        "email"     => $this->input->post("email"),
+                        "img_url"   => $uploaded_file
                     );
 
                     /** If Upload Process is Unsuccesful */
@@ -265,17 +301,18 @@ class References extends CI_Controller
                     $this->session->set_flashdata("alert", $alert);
 
                     /** Redirect to Module's List Page */
-                    redirect(base_url("references/update_form/$id"));
+                    redirect(base_url("users/update_form/$id"));
                 }
             } else {
                 $data = array(
+                    "user_name" => $this->input->post("user_name"),
+                    "full_name" => $this->input->post("full_name"),
                     "title" => $this->input->post("title"),
-                    "description" => $this->input->post("description"),
-                    "url" => convertToSEO($this->input->post("title"))
+                    "email" => $this->input->post("email")
                 );
             }
 
-            $update = $this->reference_model->update(array("id" => $id), $data);
+            $update = $this->user_model->update(array("id" => $id), $data);
 
             /** If Update Statement Succesful */
             if ($update) {
@@ -302,7 +339,7 @@ class References extends CI_Controller
             $this->session->set_flashdata("alert", $alert);
 
             /** Redirect to Module's List Page */
-            redirect(base_url("references"));
+            redirect(base_url("users"));
 
             /** If Validation Unsuccessful */
 
@@ -311,7 +348,7 @@ class References extends CI_Controller
             $viewData = new stdClass();
 
             /** Taking the specific row's data from the table */
-            $item = $this->reference_model->get(
+            $item = $this->user_model->get(
                 array(
                     "id" => $id
                 )
@@ -330,14 +367,14 @@ class References extends CI_Controller
 
     public function delete($id)
 {
-    /** Taking the specific row's data from referencess table */
-    $item = $this->reference_model->get(
+    /** Taking the specific row's data from userss table */
+    $item = $this->user_model->get(
         array(
             "id" => $id
         )
     );
     /** Starting Delete Statement */
-    $delete = $this->reference_model->delete(
+    $delete = $this->user_model->delete(
         array(
             "id" => $id
         )
@@ -371,7 +408,7 @@ class References extends CI_Controller
     $this->session->set_flashdata("alert", $alert);
 
     /** Redirect to Module's List Page */
-    redirect(base_url("references"));
+    redirect(base_url("users"));
 
 }
 
@@ -381,7 +418,7 @@ class References extends CI_Controller
     $isActive = ($this->input->post("data") === "true") ? 1 : 0;
 
     /** Update the isActive column with isActive varible's value */
-    $this->reference_model->update(
+    $this->user_model->update(
         array(
             "id" => $id
         ),
@@ -405,7 +442,7 @@ class References extends CI_Controller
     /** Update all  */
     foreach ($items as $rank => $id) {
 
-        $this->reference_model->update(
+        $this->user_model->update(
             array(
                 "id" => $id,
                 "rank!=" => $rank
@@ -416,5 +453,110 @@ class References extends CI_Controller
         );
     }
 }
+
+    public function update_password_form($id)
+    {
+        $viewData = new stdClass();
+
+        /** Taking the specific row's data from the table */
+        $item = $this->user_model->get(
+            array(
+                "id" => $id
+            )
+        );
+
+        /** Defining data to be sent to view */
+        $viewData->viewFolder = $this->viewFolder;
+        $viewData->subViewFolder = "password";
+        $viewData->item = $item;
+
+        /** Load View */
+        $this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/index", $viewData);
+    }
+
+    public function update_password($id)
+    {
+        /** Load Form Validation Library */
+        $this->load->library("form_validation");
+
+        /** Validation Rules */
+        $this->form_validation->set_rules("password", "Şifre", "trim|required|min_length[6]");
+        $this->form_validation->set_rules("re-password", "Şifre Tekrar", "trim|required|matches[password]");
+
+        /** Translate Validation Messages */
+        $this->form_validation->set_message(
+            array(
+                "required" => "<b>{field}</b> alanı boş bırakılamaz...",
+                "matches" => "Girmiş olduğunuz şifreler birbiriyle uyuşmamaktadır...",
+                "min_length" => "<b>{field}</b> en az {param} karakter içermelidir..."
+            )
+        );
+
+        /** Run Form Validation */
+        $validate = $this->form_validation->run();
+
+        /** If Validation Successful */
+        if ($validate) {
+
+            /** Start Update Statement */
+            $update = $this->user_model->update(
+                array(
+                    "id" => $id
+                ),
+                array(
+                    "password" => md5($this->input->post("password"))
+                )
+            );
+
+            /** If Update Statement Succesful */
+            if ($update) {
+
+                /** Set the notification is Success */
+                $alert = array(
+                    "type" => "success",
+                    "title" => "İşlem Başarılı",
+                    "text" => "Şifre başarılı bir şekilde güncellendi.."
+                );
+
+                /** If Update Statement Unsuccessful */
+            } else {
+
+                /** Set the notification is Error */
+                $alert = array(
+                    "type" => "error",
+                    "title" => "İşlem Başarısız",
+                    "text" => "Şifre güncelleme işlemi esnasında bir sorun oluştu.."
+                );
+
+            }
+
+            $this->session->set_flashdata("alert", $alert);
+
+            /** Redirect to Module's List Page */
+            redirect(base_url("users"));
+
+            /** If Validation Unsuccessful */
+
+        } else {
+            /** Reload View and Show Error Messages Below the Inputs */
+            $viewData = new stdClass();
+
+            /** Taking the specific row's data from the table */
+            $item = $this->user_model->get(
+                array(
+                    "id" => $id
+                )
+            );
+
+            /** Defining data to be sent to view */
+            $viewData->viewFolder = $this->viewFolder;
+            $viewData->subViewFolder = "password";
+            $viewData->form_error = true;
+            $viewData->item = $item;
+
+            /** Reload View */
+            $this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/index", $viewData);
+        }
+    }
 
 }

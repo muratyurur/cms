@@ -8,6 +8,9 @@ class Dashboard extends CI_Controller {
     {
         parent::__construct();
         $this->viewFolder = "dashboard_v";
+
+        if (!get_active_user())
+            redirect(base_url("login"));
     }
 
     public function index()

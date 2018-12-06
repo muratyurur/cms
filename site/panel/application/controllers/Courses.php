@@ -7,6 +7,9 @@ class Courses extends CI_Controller
         parent::__construct();
         $this->viewFolder = "courses_v";
 
+        if (!get_active_user())
+            redirect(base_url("login"));
+
         /** Load Models */
         $this->load->model("course_model");
     }

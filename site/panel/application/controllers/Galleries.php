@@ -8,6 +8,9 @@ class Galleries extends CI_Controller
         /** Setting viewFolder */
         $this->viewFolder = "galleries_v";
 
+        if (!get_active_user())
+            redirect(base_url("login"));
+
         /** Loading Models */
         $this->load->model("gallery_model");
         $this->load->model("image_model");

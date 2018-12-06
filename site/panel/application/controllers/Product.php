@@ -8,6 +8,9 @@ class Product extends CI_Controller
         /** Setting viewFolder */
         $this->viewFolder = "product_v";
 
+        if (!get_active_user())
+            redirect(base_url("login"));
+
         /** Loading Models */
         $this->load->model("product_model");
         $this->load->model("product_image_model");
