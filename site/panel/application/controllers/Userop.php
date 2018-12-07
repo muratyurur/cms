@@ -155,7 +155,7 @@ class Userop extends CI_Controller
             )
         );
 
-        if ($this->form_validation->run() == FALSE) {
+        if ($this->form_validation->run() == false) {
             /** Reload View and Show Error Messages Below the Inputs */
             $viewData = new stdClass();
 
@@ -176,50 +176,22 @@ class Userop extends CI_Controller
 
             if ($user) {
 
-                $this->load->model("email_model");
-
                 $this->load->helper("string");
 
                 $temp_password = random_string();
 
-                $email_settings = $this->email_model->get(
-                    array(
-                        "isActive"  => 1
-                    )
-                );
-
-                $config = array(
-                    "protocol" => $email_settings->protocol,
-                    "smtp_host" => $email_settings->host,
-                    "smtp_port" => $email_settings->port,
-                    "smtp_user" => $email_settings->user,
-                    "smtp_pass" => $email_settings->password,
-                    "starttls" => true,
-                    "charset" => "utf-8",
-                    "mailtype" => "html",
-                    "wordwrap" => true,
-                    "newline" => "\r\n",
-                );
-
-                $this->load->library("email", $config);
-
-                $this->email->from($email_settings->from, $email_settings->user_name);
-                $this->email->to($this->input->post("email"));
-                $this->email->subject("Yönetim Paneli Geçici Şifre");
-                $this->email->message("Yönetim Paneline giriş yapabilmeniz için geçici şifreniz: <br><br> 
+                $send = send_email($user->email, "Yönetim Paneli Geçici Şifre", "Yönetim Paneline giriş yapabilmeniz için geçici şifreniz: <br><br> 
                                         <span style='font-weight: bold; color: tomato'>$temp_password</span><br><br>
                                         Geçici şifreniz ile giriş yaptıktan sonra şifrenizi değiştirmeyi unutmayın...");
-
-                $send = $this->email->send();
 
                 if ($send) {
 
                     $this->user_model->update(
                         array(
-                            "id"    => $user->id
+                            "id" => $user->id
                         ),
                         array(
-                            "password"  => md5($temp_password)
+                            "password" => md5($temp_password)
                         )
                     );
 
@@ -236,7 +208,19 @@ class Userop extends CI_Controller
                     redirect(base_url("login"));
 
                 } else {
-                    echo $this->email->print_debugger();
+                    /** Set the notification is Error */
+                    $alert = array(
+                        "type" => "error",
+                        "title" => "İşlem başarısız!",
+                        "text" => "ePosta gönderimi esnasından bir hata oluştu."
+                    );
+
+                    $this->session->set_flashdata("alert", $alert);
+
+                    /** Redirect to Dashboard Page */
+                    redirect(base_url("sifremi-sifirla"));
+
+                    die();
                 }
 
             } else {
@@ -251,6 +235,8 @@ class Userop extends CI_Controller
 
                 /** Redirect to Dashboard Page */
                 redirect(base_url("sifremi-sifirla"));
+
+                die();
             }
         }
 
