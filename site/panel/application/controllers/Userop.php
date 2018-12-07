@@ -88,7 +88,7 @@ class Userop extends CI_Controller
                 /** Redirect to Dashboard Page */
                 redirect(base_url());
             } else {
-                /** Set the notification is Success */
+                /** Set the notification is Error */
                 $alert = array(
                     "type" => "error",
                     "title" => "Kullanıcı Girişi Başarısız",
@@ -125,35 +125,135 @@ class Userop extends CI_Controller
         }
     }
 
-    function send_email()
+    public function forgot_password()
     {
-        $config = array(
-            "protocol"  => "smtp",
-            "smtp_host"  => "ssl://smtp.yandex.com.tr",
-            "smtp_port"  => "465",
-            "smtp_user"  => "bilgi@muratyurur.com",
-            "smtp_pass"  => "My190782!",
-            "starttls"  => true,
-            "charset"  => "utf-8",
-            "mailtype"  => "html",
-            "wordwrap"  => true,
-            "newline"  => "\r\n",
+        if (get_active_user())
+            redirect(base_url());
+
+        $viewData = new stdClass();
+
+        /** Defining data to be sent to view */
+        $viewData->viewFolder = $this->viewFolder;
+        $viewData->subViewFolder = "forgot_password";
+
+        /** Load View */
+        $this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/index", $viewData);
+    }
+
+    public function reset_password()
+    {
+        $this->load->library("form_validation");
+
+        /** Validation Rules */
+        $this->form_validation->set_rules("email", "Kayıtlı ePosta", "trim|required|valid_email");
+
+        /** Translate Validation Messages */
+        $this->form_validation->set_message(
+            array(
+                "required" => "<b>{field}</b> alanı boş bırakılamaz...",
+                "valid_email" => "Lütfen geçerli bir ePosta adresi giriniz...",
+            )
         );
 
-        $this->load->library("email", $config);
+        if ($this->form_validation->run() == FALSE) {
+            /** Reload View and Show Error Messages Below the Inputs */
+            $viewData = new stdClass();
 
-        $this->email->from("bilgi@muratyurur.com", "Yönetim Paneli");
-        $this->email->to("admin@muratyurur.com");
-        $this->email->subject("CMS ePosta deneme çalışması");
-        $this->email->message("Deneme ePostası");
+            /** Defining data to be sent to view */
+            $viewData->viewFolder = $this->viewFolder;
+            $viewData->subViewFolder = "forgot_password";
+            $viewData->form_error = true;
 
-        $send = $this->email->send();
-
-        if ($send)
-        {
-            echo "ePosta başarıyla gönderilmiştir.";
+            /** Reload View */
+            $this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/index", $viewData);
         } else {
-            echo $this->email->print_debugger();
+            $user = $this->user_model->get(
+                array(
+                    "isActive" => 1,
+                    "email" => $this->input->post("email")
+                )
+            );
+
+            if ($user) {
+
+                $this->load->model("email_model");
+
+                $this->load->helper("string");
+
+                $temp_password = random_string();
+
+                $email_settings = $this->email_model->get(
+                    array(
+                        "isActive"  => 1
+                    )
+                );
+
+                $config = array(
+                    "protocol" => $email_settings->protocol,
+                    "smtp_host" => $email_settings->host,
+                    "smtp_port" => $email_settings->port,
+                    "smtp_user" => $email_settings->user,
+                    "smtp_pass" => $email_settings->password,
+                    "starttls" => true,
+                    "charset" => "utf-8",
+                    "mailtype" => "html",
+                    "wordwrap" => true,
+                    "newline" => "\r\n",
+                );
+
+                $this->load->library("email", $config);
+
+                $this->email->from($email_settings->from, $email_settings->user_name);
+                $this->email->to($this->input->post("email"));
+                $this->email->subject("Yönetim Paneli Geçici Şifre");
+                $this->email->message("Yönetim Paneline giriş yapabilmeniz için geçici şifreniz: <br><br> 
+                                        <span style='font-weight: bold; color: tomato'>$temp_password</span><br><br>
+                                        Geçici şifreniz ile giriş yaptıktan sonra şifrenizi değiştirmeyi unutmayın...");
+
+                $send = $this->email->send();
+
+                if ($send) {
+
+                    $this->user_model->update(
+                        array(
+                            "id"    => $user->id
+                        ),
+                        array(
+                            "password"  => md5($temp_password)
+                        )
+                    );
+
+                    /** Set the notification is Success */
+                    $alert = array(
+                        "type" => "success",
+                        "title" => "İşlem başarılı",
+                        "text" => "$user->full_name, şifreniz sıfırlanarak ePosta adresinize gönderildi."
+                    );
+
+                    $this->session->set_flashdata("alert", $alert);
+
+                    /** Redirect to Dashboard Page */
+                    redirect(base_url("login"));
+
+                } else {
+                    echo $this->email->print_debugger();
+                }
+
+            } else {
+                /** Set the notification is Error */
+                $alert = array(
+                    "type" => "error",
+                    "title" => "Böyle bir kullanıcı bulunamadı!",
+                    "text" => "Lütfen ePosta adresini kontrol ederek tekrar deneyin."
+                );
+
+                $this->session->set_flashdata("alert", $alert);
+
+                /** Redirect to Dashboard Page */
+                redirect(base_url("sifremi-sifirla"));
+            }
         }
+
+        $this->input->post("email");
     }
 }

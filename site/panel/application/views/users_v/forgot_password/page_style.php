@@ -1,0 +1,2 @@
+<link rel="stylesheet" href="<?php echo base_url("assets"); ?>/assets/css/misc-pages.css">
+<link rel="stylesheet" href="<?php echo base_url("assets"); ?>/libs/bower/material-design-iconic-font/dist/css/material-design-iconic-font.css">

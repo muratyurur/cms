@@ -24,43 +24,26 @@
 <div class="limiter">
     <div class="container-login100">
         <div class="wrap-login100">
-            <form class="login100-form" action="<?php echo base_url("userop/do_login"); ?>" method="post">
-					<span class="login100-form-title p-b-43">
+            <form class="login100-form" action="<?php echo base_url("sifremi-sifirla"); ?>" method="post">
+                <a href="<?php echo base_url("login") ?>">
+                    <span class="login100-form-title p-b-43">
 						<span><i class="zmdi zmdi-check-all"></i></span>
                         <span style="font-size: xx-large; color: #0089DD">Y<small class="text-muted">önetim</small> P<small
                                     class="text-muted">aneli</small></span>
 					</span>
+                </a>
                 <div class="wrap-input100">
-                    <input class="input100" type="email" name="user_email" autocomplete="new-password">
+                    <input class="input100" type="email" name="email" autocomplete="new-password" value="<?php echo (isset($form_error)) ? set_value("email") : "" ; ?>">
                     <span class="focus-input100"></span>
-                    <span class="label-input100">ePosta</span>
+                    <span class="label-input100">Kayıtlı ePosta</span>
                 </div>
                 <?php if (isset($form_error)) { ?>
-                    <span class="input-form-error" style="color: #ff5b5b!important; text-align: right"> <?php echo form_error("user_email"); ?></span>
+                    <span class="input-form-error" style="color: #ff5b5b!important; text-align: right"> <?php echo form_error("email"); ?></span>
                 <?php } ?>
                 <br>
-                <div class="wrap-input100">
-                    <input class="input100" type="password" name="user_password" autocomplete="new-password">
-                    <span class="focus-input100"></span>
-                    <span class="label-input100">Şifre</span>
-                </div>
-                <?php if (isset($form_error)) { ?>
-                    <span class="input-form-error" style="color: #ff5b5b!important; text-align: right"> <?php echo form_error("user_password"); ?></span>
-                <?php } ?>
-                <br>
-                <div class=" w-full p-t-3 p-b-32">
-
-                    <div>
-                        <a href="<?php echo base_url("sifremi-unuttum"); ?>" class="txt1" style="float: right;">
-                            Şifremi Unuttum
-                        </a>
-                    </div>
-                </div>
-
-
                 <div class="container-login100-form-btn">
                     <button type="submit" class="login100-form-btn">
-                        Giriş Yap
+                        Geçici Şifremi Gönder
                     </button>
                 </div>
             </form>
