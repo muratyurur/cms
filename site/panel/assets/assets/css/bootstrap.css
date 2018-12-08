@@ -3230,13 +3230,13 @@ tbody.collapse.in {
   color: #777777;
   white-space: nowrap; }
 
-.dropdown-backdrop {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  top: 0;
-  z-index: 990; }
+/*.dropdown-backdrop {*/
+  /*position: fixed;*/
+  /*left: 0;*/
+  /*right: 0;*/
+  /*bottom: 0;*/
+  /*top: 0;*/
+  /*z-index: 990; }*/
 
 .pull-right > .dropdown-menu {
   right: 0;
