@@ -25,7 +25,7 @@
 
                 <li class="has-submenu">
                     <a href="<?php echo base_url("galleries"); ?>">
-                        <i class="menu-icon zmdi zmdi-group zmdi-hc-lg"></i>
+                        <i class="menu-icon zmdi zmdi-collection-image zmdi-hc-lg"></i>
                         <span class="menu-text">Galeriler</span>
                     </a>
                 </li>
@@ -65,21 +65,21 @@
 
                 <li>
                     <a href="<?php echo base_url("courses"); ?>">
-                        <i class="menu-icon zmdi zmdi-calendar-note zmdi-hc-lg"></i>
+                        <i class="menu-icon zmdi zmdi-graduation-cap zmdi-hc-lg"></i>
                         <span class="menu-text">Eğitimler</span>
                     </a>
                 </li>
 
                 <li>
                     <a href="<?php echo base_url("references"); ?>">
-                        <i class="menu-icon zmdi zmdi-case-check zmdi-hc-lg"></i>
+                        <i class="menu-icon fa fa-handshake-o"></i>
                         <span class="menu-text">Referanslar</span>
                     </a>
                 </li>
 
                 <li>
                     <a href="<?php echo base_url("brands"); ?>">
-                        <i class="menu-icon zmdi zmdi-puzzle-piece zmdi-hc-lg"></i>
+                        <i class="menu-icon zmdi zmdi-labels zmdi-hc-lg"></i>
                         <span class="menu-text">Markalar</span>
                     </a>
                 </li>

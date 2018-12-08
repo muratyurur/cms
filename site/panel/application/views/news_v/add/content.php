@@ -23,9 +23,9 @@
                     <div class="form-group">
                         <label for="control-demo-6">Haber Türü</label>
                         <div id="control-demo-6">
-                            <select name="news_type" class="form-control news-type-select">
-                                <option <?php echo (isset($news_type) && $news_type == "image") ? "selected" : ""; ?> value="image">Resim</option>
-                                <option <?php echo (isset($news_type) && $news_type == "video") ? "selected" : ""; ?> value="video">Video</option>
+                            <select style="font-family: FontAwesome, Raleway" name="news_type" class="form-control news-type-select">
+                                <option <?php echo (isset($news_type) && $news_type == "image") ? "selected" : ""; ?> value="image">&#xf1c5; &nbsp;Resim</option>
+                                <option <?php echo (isset($news_type) && $news_type == "video") ? "selected" : ""; ?> value="video">&#xf167; &nbsp;Video</option>
                             </select>
                         </div>
                     </div>
